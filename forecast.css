@@ -8,10 +8,17 @@ input {
 	font-size: 1em;
 }
 svg {
-	max-width: 1200px;
+	max-width: 800px;
 	display: block;
 	margin-top: 4px;
-	border: 1px solid #f00;
 	fill: #aaa;
 }
 tspan { fill: #fff }
+h2 { font-weight: normal }
+#hourly rect:not(:hover) + text, #hourly rect:not(:hover) + text + text, #hourly rect:not(:hover) + text + text + ellipse, #hourly rect:not(:hover) + text + text + line + ellipse {
+	opacity: 0;
+	transition: opacity 0.3s;
+}
+#hourly rect + text, #hourly rect + text + text, #hourly rect + text + text + ellipse, #hourly rect + text + text + line + ellipse { transition: opacity 0.3s 0.1s }
+line { stroke: #fff }
+rect ~ line { stroke: #0ff }
