@@ -1,0 +1,17 @@
+html { background: #000 }
+body {
+	font: 100% sans-serif;
+	color: #fff;
+}
+input {
+	width: 400px; max-width: 100%;
+	font-size: 1em;
+}
+svg {
+	max-width: 1200px;
+	display: block;
+	margin-top: 4px;
+	border: 1px solid #f00;
+	fill: #aaa;
+}
+tspan { fill: #fff }
