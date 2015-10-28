@@ -34,7 +34,7 @@ function drawData(data) {
 	currentlySVG.appendChild(createText(8, 96, 24, false, 'Feels like {' + data.currently.apparentTemperature.toFixed(2) + '} ˚C'));
 	currentlySVG.appendChild(createText(8, 132, 32, false, '{' + data.currently.summary + '}'));
 	currentlySVG.appendChild(createText(32, 160, 22, false, '{' + data.currently.cloudCover.toFixed(2) + '} cloud cover'));
-	if (typeof data.currently.precipProbability != 'undefined') currentlySVG.appendChild(createText(32, 184, 22, false, '{' + data.currently.precipProbability + '} chance of rain at {' + (data.currently.precipIntensity * 100).toFixed(0) + '} µm/hr'));
+	if (typeof data.currently.precipProbability != 'undefined') currentlySVG.appendChild(createText(32, 184, 22, false, '{' + data.currently.precipProbability.toFixed(2) + '} chance of rain at {' + (data.currently.precipIntensity * 100).toFixed(0) + '} µm/hr'));
 	if (data.currently.visibility) currentlySVG.appendChild(createText(400, 160, 22, false, '{' + data.currently.visibility + '} km visibility'));
 	currentlySVG.appendChild(createText(400, 184, 22, false, 'Wind {' + data.currently.windSpeed + '} km/hr'));
 	currentlySVG.appendChild(createText(432, 208, 22, false, 'from {' + data.currently.windBearing + '}˚ clockwise of true north'));
