@@ -61,7 +61,7 @@ function drawData(data) {
 			var line = document.createElementNS(svgns, 'line');
 			line.setAttribute('x1', 20);
 			line.setAttribute('y1', ly);
-			line.setAttribute('x2', 800);
+			line.setAttribute('x2', 754);
 			line.setAttribute('y2', ly);
 			line.style.stroke = '#888';
 			hourlySVG.appendChild(line);
@@ -70,6 +70,8 @@ function drawData(data) {
 		p++;
 	}
 	hourlySVG.appendChild(createText(4, 228, 14, false, '˚C'));
+	var currentHour = new Date(data.hourly.data[0].time * 1000).getHours();
+	if ((currentHour % 12) < 6) hourlySVG.appendChild(createText((currentHour % 12 - 12) / 48 * 720 + 33, 232, 11, 'middle', 'This' + (currentHour >= 12 ? ' afternoon' : ' morning')));
 	for (var t = data.hourly.data[0].time; t <= data.hourly.data[data.hourly.data.length - 1].time; t += 3600) {
 		var d = new Date(t * 1000);
 		if (d.getHours() % 12 == 0) {
@@ -124,9 +126,7 @@ function drawData(data) {
 
 if (localStorage.lastData) drawData(JSON.parse(localStorage.lastData));
 
-var apiInput = document.getElementById('api-key'),
-	reqBtn = document.getElementById('req-btn'),
-	timeTravel = document.getElementById('time-travel');
+var apiInput = document.getElementById('api-key');
 apiInput.value = localStorage.apiKey || apiInput.focus() || '';
 apiInput.oninput = function() {
 	localStorage.apiKey = this.value;
@@ -134,20 +134,12 @@ apiInput.oninput = function() {
 var pos;
 navigator.geolocation.getCurrentPosition(function(currentPos) {
 	pos = currentPos;
-	reqBtn.disabled = false;
-	console.log('Position recieved.');
-}, function(e) {
-	alert('Error determining location.');
-	throw e;
-});
-reqBtn.onclick = function() {
 	var req = new XMLHttpRequest();
 	req.open('GET',
 		'https://jsonp.afeld.me/?url=https://api.forecast.io/forecast/' +
 		apiInput.value +
 		'/' + pos.coords.latitude +
 		',' + pos.coords.longitude +
-		(timeTravel.value ? ',' + parseInt(new Date(timeTravel.value).getTime() / 1000) : '') +
 		'?units=ca&extend=hourly');
 	req.send();
 	req.addEventListener('load', function() {
@@ -155,4 +147,8 @@ reqBtn.onclick = function() {
 		if (e) e.parentNode.removeChild(e);
 		drawData(JSON.parse(localStorage.lastData = this.responseText));
 	});
-}
+	console.log('Position recieved.');
+}, function(e) {
+	alert('Error determining location.');
+	throw e;
+});
