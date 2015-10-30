@@ -124,7 +124,13 @@ function drawData(data) {
 	document.body.appendChild(cont);
 }
 
-if (localStorage.lastData) drawData(JSON.parse(localStorage.lastData));
+if (localStorage.lastData) {
+	try {
+		drawData(JSON.parse(localStorage.lastData));
+	} catch(e) {
+		console.log(e);
+	}
+}
 
 var apiInput = document.getElementById('api-key');
 apiInput.value = localStorage.apiKey || apiInput.focus() || '';
@@ -145,7 +151,11 @@ navigator.geolocation.getCurrentPosition(function(currentPos) {
 	req.addEventListener('load', function() {
 		var e = document.getElementsByTagName('section')[0];
 		if (e) e.parentNode.removeChild(e);
-		drawData(JSON.parse(localStorage.lastData = this.responseText));
+		try {
+			drawData(JSON.parse(localStorage.lastData = this.responseText));
+		} catch(e) {
+			console.log(e);
+		}
 	});
 	console.log('Position recieved.');
 }, function(e) {
