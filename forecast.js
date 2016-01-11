@@ -71,7 +71,7 @@ function drawData(data) {
 	}
 	hourlySVG.appendChild(createText(4, 228, 14, false, '˚C'));
 	var currentHour = new Date(data.hourly.data[0].time * 1000).getHours();
-	if ((currentHour % 12) < 6) hourlySVG.appendChild(createText((currentHour % 12 - 12) / 48 * 720 + 33, 232, 11, 'middle', 'This' + (currentHour >= 12 ? ' afternoon' : ' morning')));
+	if ((currentHour % 12) < 6) hourlySVG.appendChild(createText((6 - currentHour % 12) / 48 * 720 + 33, 232, 11, 'middle', 'This' + (currentHour >= 12 ? ' afternoon' : ' morning')));
 	for (var t = data.hourly.data[0].time; t <= data.hourly.data[data.hourly.data.length - 1].time; t += 3600) {
 		var d = new Date(t * 1000);
 		if (d.getHours() % 12 == 0) {
@@ -160,5 +160,5 @@ navigator.geolocation.getCurrentPosition(function(currentPos) {
 	console.log('Position recieved.');
 }, function(e) {
 	alert('Error determining location.');
-	throw e;
+	throw JSON.stringify(e);
 });
