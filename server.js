@@ -7,7 +7,7 @@ var constants = require('constants'),
 http.createServer({
 	key: fs.readFileSync('../Secret/devdoodle.net.key'),
 	cert: fs.readFileSync('../Secret/devdoodle.net.crt'),
-	ca: [fs.readFileSync('../Secret/devdoodle.net-geotrust.crt')],
+	ca: [fs.readFileSync('../Secret/devdoodle.net-chain.crt')],
 	ecdhCurve: 'secp384r1',
 	ciphers: [
 		'ECDHE-ECDSA-AES256-GCM-SHA384',
