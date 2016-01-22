@@ -86,7 +86,7 @@ function drawData(data) {
 			hourlySVG.appendChild(line);
 		} else if (d.getHours() % 12 == 6) {
 			var x = (t - data.hourly.data[0].time) / 3600 / 48 * 720 + 33;
-			if (x < 700) hourlySVG.appendChild(createText(x, 232, 11, 'middle', ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][d.getDay()] + (d.getHours() == 18 ? ' afternoon' : ' morning')));
+			if (x > 75) hourlySVG.appendChild(createText(x, 232, 11, 'middle', ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][d.getDay()] + (d.getHours() == 18 ? ' afternoon' : ' morning')));
 		}
 	}
 	var lastlastY,
