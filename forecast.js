@@ -138,8 +138,7 @@ function drawData(data) {
 	hourlySVG.appendChild(circle);
 	var path = document.createElementNS(svgns, 'path');
 	path.setAttribute('d', d);
-	console.log(d);
-	hourlySVG.appendChild(path);
+	hourlySVG.insertBefore(path, hourlySVG.getElementsByTagName('rect')[0]);
 	cont.appendChild(hourlySVG);
 	document.body.appendChild(cont);
 }
