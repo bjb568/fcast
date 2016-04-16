@@ -39,8 +39,8 @@ function drawData(data) {
 		currentlySVG.appendChild(createText(64, 208, 22, false, 'at {' + (data.currently.precipIntensity * 100).toFixed(0) + '} µm/hr'));
 	}
 	if (data.currently.visibility) currentlySVG.appendChild(createText(400, 160, 22, false, '{' + data.currently.visibility + '} km visibility'));
-	currentlySVG.appendChild(createText(400, 184, 22, false, 'Wind {' + data.currently.windSpeed + '} km/hr'));
-	currentlySVG.appendChild(createText(432, 208, 22, false, 'from {' + data.currently.windBearing + '}˚ clockwise of true north'));
+	currentlySVG.appendChild(createText(400, 184, 22, false, 'Wind {' + data.currently.windSpeed.toFixed(2) + '} m/s'));
+	currentlySVG.appendChild(createText(432, 208, 22, false, 'from {' + (data.currently.windBearing / 360).toFixed(3) + '}τ clockwise of true north'));
 	cont.appendChild(currentlySVG);
 	var hourlyTitle = document.createElement('h2');
 	hourlyTitle.appendChild(document.createTextNode(data.hourly.summary));
@@ -165,7 +165,7 @@ navigator.geolocation.getCurrentPosition(function(currentPos) {
 		apiInput.value +
 		'/' + pos.coords.latitude +
 		',' + pos.coords.longitude +
-		'?units=ca&extend=hourly');
+		'?units=si&extend=hourly');
 	req.send();
 	req.addEventListener('load', function() {
 		var e = document.getElementsByTagName('section')[0];
