@@ -28,10 +28,10 @@ function drawData(data) {
 	var cont = document.createElement('section');
 	var currentlySVG = document.createElementNS(svgns, 'svg');
 	currentlySVG.setAttribute('viewBox', '0 0 800 216');
-	currentlySVG.appendChild(createText(8, 64, 64, false, '{' + data.currently.temperature.toFixed(2) + '} ˚C'));
+	currentlySVG.appendChild(createText(8, 64, 64, false, '{' + (data.currently.temperature + 273.15).toFixed(2) + '}K'));
 	currentlySVG.appendChild(createText(792, 44, 36, 'end', '{' + data.currently.humidity.toFixed(2) + '} humidity'));
-	currentlySVG.appendChild(createText(792, 72, 20, 'end', '{' + data.currently.dewPoint.toFixed(2) + '} ˚C dew point'));
-	currentlySVG.appendChild(createText(8, 96, 24, false, 'Feels like {' + data.currently.apparentTemperature.toFixed(2) + '} ˚C'));
+	currentlySVG.appendChild(createText(792, 72, 20, 'end', '{' + (data.currently.dewPoint + 273.15).toFixed(2) + '}K dew point'));
+	currentlySVG.appendChild(createText(8, 96, 24, false, 'Feels like {' + (data.currently.apparentTemperature + 273.15).toFixed(2) + '}K'));
 	currentlySVG.appendChild(createText(8, 132, 32, false, '{' + data.currently.summary + '}'));
 	currentlySVG.appendChild(createText(32, 160, 22, false, '{' + data.currently.cloudCover.toFixed(2) + '} cloud cover'));
 	if (typeof data.currently.precipProbability != 'undefined') {
@@ -51,8 +51,8 @@ function drawData(data) {
 	var min = Infinity,
 		max = -Infinity;
 	for (var i = 0; i < data.hourly.data.length; i++) {
-		min = Math.min(min, data.hourly.data[i].temperature);
-		max = Math.max(max, data.hourly.data[i].temperature);
+		min = Math.min(min, data.hourly.data[i].temperature + 273.15);
+		max = Math.max(max, data.hourly.data[i].temperature + 273.15);
 	}
 	var range = max - min;
 	max = Math.ceil(max + range / 8);
@@ -63,16 +63,16 @@ function drawData(data) {
 		p++;
 		if (p % 2 == 0 || range < 12) {
 			var line = document.createElementNS(svgns, 'line');
-			line.setAttribute('x1', 20);
+			line.setAttribute('x1', 24);
 			line.setAttribute('y1', ly);
 			line.setAttribute('x2', 754);
 			line.setAttribute('y2', ly);
 			line.style.stroke = '#888';
 			hourlySVG.appendChild(line);
-			hourlySVG.appendChild(createText(17, ly + 4, 11, 'end', p.toString()));
+			hourlySVG.appendChild(createText(20, ly + 4, 11, 'end', p.toString()));
 		}
 	}
-	hourlySVG.appendChild(createText(4, 228, 14, false, '˚C'));
+	hourlySVG.appendChild(createText(4, 228, 14, false, 'K / time'));
 	for (var t = data.hourly.data[0].time; t <= data.hourly.data[data.hourly.data.length - 1].time; t += 3600) {
 		var d = new Date(t * 1000);
 		if (d.getHours() % 12 == 0) {
@@ -95,7 +95,7 @@ function drawData(data) {
 		d = 'M',
 		m = 0.5;
 	for (var i = 0; i < data.hourly.data.length; i++) {
-		var y = 216 - (data.hourly.data[i].temperature - min) * incr;
+		var y = 216 - (data.hourly.data[i].temperature + 273.15 - min) * incr;
 		if (lastY) {
 			if (i > 1) d += nextControl.x + ',' + nextControl.y + ' ' + (i * 15 + 18 - 15 * m) + ',' + (lastY + m * (lastY - y)) + ' ' + (i * 15 + 18) + ',' + lastY + ' ';
 			var circle = document.createElementNS(svgns, 'ellipse');
@@ -127,7 +127,7 @@ function drawData(data) {
 		rect.setAttribute('height', 220);
 		rect.style.opacity = 0;
 		hourlySVG.appendChild(rect);
-		hourlySVG.appendChild(createText(i < 44 ? i * 15 + 42 : i * 15 + 24, y, 14, i < 44 ? false : 'end', '{' + data.hourly.data[i].temperature.toFixed(2) + '} ˚C'));
+		hourlySVG.appendChild(createText(i < 44 ? i * 15 + 42 : i * 15 + 24, y, 14, i < 44 ? false : 'end', '{' + (data.hourly.data[i].temperature + 273.15).toFixed(2) + '}K'));
 		hourlySVG.appendChild(createText(i < 44 ? i * 15 + 42 : i * 15 + 24, y + 16, 14, i < 44 ? false : 'end', 'at {' + new Date(data.hourly.data[i].time * 1000).getHours() + ':00}'));
 	}
 	var circle = document.createElementNS(svgns, 'ellipse');
