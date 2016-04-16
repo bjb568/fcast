@@ -140,7 +140,7 @@ function drawData(data) {
 	path.setAttribute('d', d);
 	hourlySVG.insertBefore(path, hourlySVG.getElementsByTagName('rect')[0]);
 	cont.appendChild(hourlySVG);
-	document.body.appendChild(cont);
+	document.body.insertBefore(cont, document.body.firstChild);
 }
 
 if (localStorage.lastData) {
