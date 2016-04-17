@@ -17,9 +17,11 @@ tspan { fill: #fff }
 h1 { font-size: 2em }
 h1, h2 { font-weight: normal }
 #hourly rect:not(:hover) + text, #hourly rect:not(:hover) + text + text, #hourly rect:not(:hover) + text + text + ellipse, #hourly rect:not(:hover) + text + text + line + ellipse { opacity: 0 }
-line { stroke: #fff }
-path {
+#minutely rect:not(:hover) + text, #minutely rect:not(:hover) + text + text, #minutely rect:not(:hover) + text + text + text, #minutely rect:not(:hover) + text + text + text + ellipse, #minutely rect:not(:hover) + text + text + text + line + ellipse { opacity: 0 }
+#minutely path { fill: url(#rain-gradient) }
+#hourly path {
 	stroke: #0ff;
 	fill: none;
 }
+line { stroke: #fff }
 ellipse, text, line { pointer-events: none }
