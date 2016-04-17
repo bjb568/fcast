@@ -275,10 +275,8 @@ navigator.geolocation.getCurrentPosition(function(currentPos) {
 	req.open('GET',
 		'https://jsonp.afeld.me/?url=https://api.forecast.io/forecast/' +
 		apiInput.value +
-		'/' + 37.7528 +
-		',' + -100.0171 +
-		// '/' + pos.coords.latitude +
-		// ',' + pos.coords.longitude +
+		'/' + pos.coords.latitude +
+		',' + pos.coords.longitude +
 		'?units=si&extend=hourly');
 	req.send();
 	req.addEventListener('load', function() {
