@@ -29,23 +29,25 @@ function drawData(data) {
 	var currentTime = document.createElement('h1'),
 		now = new Date(data.currently.time * 1000),
 		tz = now.getTimezoneOffset();
-	currentTime.appendChild(document.createTextNode('Weather for ' + ('00' + now.getHours()).substr(-2) + ':' + ('00' + now.getMinutes()).substr(-2) + ':' + ('00' + now.getSeconds()).substr(-2) + ' Z' + (tz == 0 ? '' : tz < 0 ? '+' + tz / -60 : tz / -60)));
+	currentTime.appendChild(document.createTextNode('Weather for ' + ('00' + now.getHours()).substr(-2) + ':' + ('00' + now.getMinutes()).substr(-2) + ':' + ('00' + now.getSeconds()).substr(-2) + ' Z' + (tz == 0 ? '' : tz < 0 ? '\u202f+\u202f' + tz / -60 : '\u202f−\u202f' + tz / 60)));
 	cont.appendChild(currentTime);
 	var currentlySVG = document.createElementNS(svgns, 'svg');
-	currentlySVG.setAttribute('viewBox', '0 0 800 216');
-	currentlySVG.appendChild(createText(8, 64, 64, false, '{' + (data.currently.temperature + 273.15).toFixed(2) + '}K'));
-	currentlySVG.appendChild(createText(792, 44, 36, 'end', '{' + data.currently.humidity.toFixed(2) + '} humidity'));
-	currentlySVG.appendChild(createText(792, 72, 20, 'end', '{' + (data.currently.dewPoint + 273.15).toFixed(2) + '}K dew point'));
-	currentlySVG.appendChild(createText(8, 96, 24, false, 'Feels like {' + (data.currently.apparentTemperature + 273.15).toFixed(2) + '}K'));
-	currentlySVG.appendChild(createText(8, 132, 32, false, '{' + data.currently.summary + '}'));
-	currentlySVG.appendChild(createText(32, 160, 22, false, '{' + data.currently.cloudCover.toFixed(2) + '} cloud cover'));
+	currentlySVG.setAttribute('viewBox', '0 0 800 240');
+	currentlySVG.appendChild(createText(8, 64, 64, false, '{' + (data.currently.temperature + 273.15).toFixed(2) + '}\u202fK'));
+	currentlySVG.appendChild(createText(792, 44, 32, 'end', '{' + data.currently.humidity.toFixed(2) + '} humidity'));
+	currentlySVG.appendChild(createText(792, 72, 18, 'end', '{' + (data.currently.dewPoint + 273.15).toFixed(2) + '}\u202fK dew point'));
+	currentlySVG.appendChild(createText(8, 96, 22, false, 'Feels like {' + (data.currently.apparentTemperature + 273.15).toFixed(2) + '}\u202fK'));
+	currentlySVG.appendChild(createText(8, 132, 30, false, '{' + data.currently.summary + '}'));
+	currentlySVG.appendChild(createText(32, 160, 20, false, '{' + data.currently.cloudCover.toFixed(2) + '} cloud cover'));
 	if (typeof data.currently.precipProbability != 'undefined') {
-		currentlySVG.appendChild(createText(32, 184, 22, false, '{' + data.currently.precipProbability.toFixed(2) + '} chance of precipitation'));
-		currentlySVG.appendChild(createText(64, 208, 22, false, 'at {' + (data.currently.precipIntensity * 100).toFixed(0) + '} µm/hr'));
+		currentlySVG.appendChild(createText(32, 184, 20, false, '{' + data.currently.precipProbability.toFixed(2) + '} chance of precipitation'));
+		currentlySVG.appendChild(createText(64, 208, 20, false, 'at {' + (data.currently.precipIntensity * 100).toFixed(0) + '}\u202fµm/hr'));
 	}
-	if (data.currently.visibility) currentlySVG.appendChild(createText(400, 160, 22, false, '{' + data.currently.visibility + '} km visibility'));
-	currentlySVG.appendChild(createText(400, 184, 22, false, 'Wind {' + data.currently.windSpeed.toFixed(2) + '} m/s'));
-	currentlySVG.appendChild(createText(432, 208, 22, false, 'from {' + (data.currently.windBearing / 360).toFixed(3) + '}τ clockwise of true north'));
+	if (data.currently.visibility) currentlySVG.appendChild(createText(400, 160, 22, false, '{' + data.currently.visibility + '}\u202fkm visibility'));
+	currentlySVG.appendChild(createText(400, 184, 20, false, 'Wind {' + data.currently.windSpeed.toFixed(2) + '}\u202fm/s'));
+	currentlySVG.appendChild(createText(432, 208, 20, false, 'from {' + (data.currently.windBearing / 360).toFixed(3) + '}τ clockwise of true north'));
+	currentlySVG.appendChild(createText(32, 232, 20, false, '{' + (data.currently.pressure * 100).toFixed(0) + '}\u202fPa of atmospheric pressure'));
+	currentlySVG.appendChild(createText(400, 232, 20, false, '{' + (data.currently.ozone * 0.0004462).toFixed(3) + '}\u202fmol/m² of atmospheric ozone'));
 	cont.appendChild(currentlySVG);
 	var hourlyTitle = document.createElement('h2');
 	hourlyTitle.appendChild(document.createTextNode(data.hourly.summary));
@@ -132,7 +134,7 @@ function drawData(data) {
 		rect.setAttribute('height', 220);
 		rect.style.opacity = 0;
 		hourlySVG.appendChild(rect);
-		hourlySVG.appendChild(createText(i < 44 ? i * 15 + 42 : i * 15 + 24, y, 14, i < 44 ? false : 'end', '{' + (data.hourly.data[i].temperature + 273.15).toFixed(2) + '}K'));
+		hourlySVG.appendChild(createText(i < 44 ? i * 15 + 42 : i * 15 + 24, y, 14, i < 44 ? false : 'end', '{' + (data.hourly.data[i].temperature + 273.15).toFixed(2) + '}\u202fK'));
 		hourlySVG.appendChild(createText(i < 44 ? i * 15 + 42 : i * 15 + 24, y + 16, 14, i < 44 ? false : 'end', 'at {' + new Date(data.hourly.data[i].time * 1000).getHours() + ':00}'));
 	}
 	var circle = document.createElementNS(svgns, 'ellipse');

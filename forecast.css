@@ -1,10 +1,10 @@
 html { background: #000 }
 body {
-	font: 100% sans-serif;
+	font: 100% "Lucida Grande" sans-serif;
 	color: #fff;
 }
 input {
-	width: 400px; max-width: 100%;
+	width: 32em; max-width: calc(100% - 7em);
 	font-size: 1em;
 }
 svg {
