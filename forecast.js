@@ -59,7 +59,7 @@ function drawData(data) {
 		max = 1;
 	for (var i = 0; i < data.minutely.data.length; i++) max = Math.max(max, data.minutely.data[i].precipIntensity * 1000);
 	var range = max - min;
-	if (max < 10) minutelySVG.setAttribute('viewBox', '0 180 800 60');
+	if (max < 10) minutelySVG.setAttribute('viewBox', '0 184 800 56');
 	max *= 1.2;
 	var p = min;
 	var incr = 216 / (max - min);
@@ -135,10 +135,10 @@ function drawData(data) {
 		rect.setAttribute('height', 220);
 		rect.style.opacity = 0;
 		minutelySVG.appendChild(rect);
-		minutelySVG.appendChild(createText(i < 44 ? i * 12 + 42 : i * 12 + 24, y - 16, 14, i < 44 ? false : 'end', '{' + (data.minutely.data[i].precipProbability).toFixed(2) + '} chance'));
-		minutelySVG.appendChild(createText(i < 44 ? i * 12 + 42 : i * 12 + 24, y, 14, i < 44 ? false : 'end', '{' + (data.minutely.data[i].precipIntensity * 1000).toFixed(0) + '}\u2009µm/hr'));
+		minutelySVG.appendChild(createText(i < 44 ? i * 12 + 42 : i * 12 + 24, y - 36, 14, i < 44 ? false : 'end', '{' + (data.minutely.data[i].precipProbability).toFixed(2) + '} chance'));
+		minutelySVG.appendChild(createText(i < 44 ? i * 12 + 42 : i * 12 + 24, y - 20, 14, i < 44 ? false : 'end', '{' + (data.minutely.data[i].precipIntensity * 1000).toFixed(0) + '}\u2006µm/hr'));
 		var now = new Date(data.minutely.data[i].time * 1000);
-		minutelySVG.appendChild(createText(i < 44 ? i * 12 + 42 : i * 12 + 24, y + 16, 14, i < 44 ? false : 'end', 'at {' + ('00' + now.getHours()).substr(-2) + ':' + ('00' + now.getMinutes()).substr(-2) + '}'));
+		minutelySVG.appendChild(createText(i < 44 ? i * 12 + 42 : i * 12 + 24, y - 4, 14, i < 44 ? false : 'end', 'at {' + ('00' + now.getHours()).substr(-2) + ':' + ('00' + now.getMinutes()).substr(-2) + '}'));
 	}
 	var circle = document.createElementNS(svgns, 'ellipse');
 	circle.setAttribute('cx', i * 12 + 21);
