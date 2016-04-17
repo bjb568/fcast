@@ -26,6 +26,11 @@ function createText(x, y, size, align, t) {
 function drawData(data) {
 	console.log(data);
 	var cont = document.createElement('section');
+	var currentTime = document.createElement('h1'),
+		now = new Date(data.currently.time * 1000),
+		tz = now.getTimezoneOffset();
+	currentTime.appendChild(document.createTextNode('Weather for ' + ('00' + now.getHours()).substr(-2) + ':' + ('00' + now.getMinutes()).substr(-2) + ':' + ('00' + now.getSeconds()).substr(-2) + ' Z' + (tz == 0 ? '' : tz < 0 ? '+' + tz / -60 : tz / -60)));
+	cont.appendChild(currentTime);
 	var currentlySVG = document.createElementNS(svgns, 'svg');
 	currentlySVG.setAttribute('viewBox', '0 0 800 216');
 	currentlySVG.appendChild(createText(8, 64, 64, false, '{' + (data.currently.temperature + 273.15).toFixed(2) + '}K'));
