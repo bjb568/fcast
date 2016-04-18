@@ -69,10 +69,10 @@ function drawData(data) {
 		minutelySVG.setAttribute('viewBox', '-24 0 824 240');
 		var max = 1;
 		for (var i = 0; i < data.minutely.data.length; i++) max = Math.max(max, data.minutely.data[i].precipIntensity * 1000);
-		var rainCollapse = max < 10;
+		var rainCollapse = max < 100;
 		if (rainCollapse) minutelySVG.setAttribute('viewBox', '-24 184 824 56');
 		max *= 1.3;
-		max = Math.max(max, 1050);
+		max = Math.max(max, rainCollapse ? 500 : 1050);
 		var p = 0;
 		var incr = 216 / max;
 		for (var ly = 216; ly > 8; ly -= incr) {
@@ -187,13 +187,13 @@ function drawData(data) {
 		}
 		p++;
 	}
-	hourlySVG.appendChild(createText(4, 230, 14, false, 'K'));
+	hourlySVG.appendChild(createText(4, 236, 14, false, 'K'));
 	var max = 0;
 	for (var i = 0; i < data.hourly.data.length; i++) max = Math.max(max, data.hourly.data[i].precipIntensity * 1000);
-	var rainCollapse = max < 10;
+	var rainCollapse = max < 100;
 	if (rainCollapse) hourlySVG.setAttribute('viewBox', '-24 -12 824 604');
 	max *= 1.3;
-	max = Math.max(max, 1100);
+	max = Math.max(max, rainCollapse ? 500 : 1100);
 	var p = 0;
 	var incr2 = 144 / max;
 	for (var ly = rainCollapse ? 272 : 384; ly > 248; ly -= incr2) {
