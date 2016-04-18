@@ -8,20 +8,51 @@ input {
 	font-size: 1em;
 }
 svg {
-	max-width: 800px;
+	width: 100%;
+	max-width: 820px;
 	display: block;
 	margin-top: 4px;
 	fill: #aaa;
 }
 tspan { fill: #fff }
-h1 { font-size: 2em }
-h1, h2 { font-weight: normal }
-#hourly rect:not(:hover) + text, #hourly rect:not(:hover) + text + text, #hourly rect:not(:hover) + text + text + ellipse, #hourly rect:not(:hover) + text + text + line + ellipse { opacity: 0 }
-#minutely rect:not(:hover) + text, #minutely rect:not(:hover) + text + text, #minutely rect:not(:hover) + text + text + text, #minutely rect:not(:hover) + text + text + text + ellipse, #minutely rect:not(:hover) + text + text + text + line + ellipse { opacity: 0 }
-#minutely path { fill: url(#rain-gradient) }
-#hourly path {
-	stroke: #0ff;
-	fill: none;
+section {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	margin: 0 -16px;
+	width: calc(100% + 8px);
 }
+h1 {
+	font-size: 1.9em;
+	margin: 0.2em 16px 0;
+}
+div {
+	margin: 0 16px;
+	flex-basis: 700px;
+	flex-grow: 1;
+}
+h1, h2 {
+	flex-basis: 100%;
+	font-weight: normal;
+}
+#hourly rect:not(:hover) + text,
+#hourly rect:not(:hover) + text + text,
+#hourly rect:not(:hover) + text + text + text,
+#hourly rect:not(:hover) + text + text + text + text,
+#hourly rect:not(:hover) + text + text + text + text + text,
+#hourly rect:not(:hover) + text + text + text + text + text + text,
+#hourly rect:not(:hover) + text + text + text + text + text + text + text,
+#hourly rect:not(:hover) + text + text + text + text + text + text + text + text,
+#hourly rect:not(:hover) + text + text + text + text + text + text + text + text + text,
+#hourly rect:not(:hover) + text + text + text + text + text + text + text + text + text + text,
+#hourly rect:not(:hover) + text + text + text + text + text + text + text + text + text + text + ellipse,
+#hourly rect:not(:hover) + text + text + text + text + text + text + text + text + text + text + ellipse + ellipse,
+#hourly rect:not(:hover) + text + text + text + text + text + text + text + text + text + text + ellipse + ellipse + ellipse,
+#hourly rect:not(:hover) + text + text + text + text + text + text + text + text + text + text + ellipse + ellipse + ellipse + ellipse,
+#hourly rect:not(:hover) + text + text + text + text + text + text + text + text + text + text + ellipse + ellipse + ellipse + ellipse + ellipse,
+#hourly rect:not(:hover) + text + text + text + text + text + text + text + text + text + text + ellipse + ellipse + ellipse + ellipse + ellipse + ellipse { opacity: 0 }
+#minutely rect:not(:hover) + text, #minutely rect:not(:hover) + text + text, #minutely rect:not(:hover) + text + text + text, #minutely rect:not(:hover) + text + text + text + ellipse { opacity: 0 }
+#minutely path { fill: url(#rain-gradient) }
+#hourly path { fill: none }
 line { stroke: #fff }
 ellipse, text, line { pointer-events: none }
