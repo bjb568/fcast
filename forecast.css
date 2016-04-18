@@ -15,25 +15,19 @@ svg {
 	fill: #aaa;
 }
 tspan { fill: #fff }
-section {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-between;
-	margin: 0 -16px;
-	width: calc(100% + 8px);
-}
 h1 {
 	font-size: 1.9em;
-	margin: 0.2em 16px 0;
-}
-div {
-	margin: 0 16px;
-	flex-basis: 700px;
-	flex-grow: 1;
+	margin: 0.2em 0;
 }
 h1, h2 {
 	flex-basis: 100%;
 	font-weight: normal;
+}
+@media (min-width: 1432px) {
+	div:not(:last-child) { width: calc(50% - 16px) }
+	div:nth-child(2) { float: left }
+	div:nth-child(3) { float: right }
+	div:nth-child(4) { clear: both }
 }
 #hourly rect:not(:hover) + text,
 #hourly rect:not(:hover) + text + text,
