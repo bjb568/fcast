@@ -100,8 +100,8 @@ function drawData(data) {
 		for (var i = 0; i < data.minutely.data.length; i++) {
 			var stop = document.createElementNS(svgns, 'stop');
 			stop.setAttribute('offset', i / 0.6 + '%');
-			var scolor = Math.round(data.minutely.data[i].precipProbability * 255);
-			stop.setAttribute('stop-color', 'rgb(0, ' + Math.round(scolor / 2) + ', ' + scolor + ')')
+			var scolor = data.minutely.data[i].precipProbability * 223;
+			stop.setAttribute('stop-color', 'rgb(32, ' + Math.round(32 + scolor / 2) + ', ' + Math.round(32 + scolor) + ')')
 			rainGradient.appendChild(stop);
 			var y = 216 - (data.minutely.data[i].precipIntensity * 1000) * incr;
 			if (lastY) {
@@ -326,8 +326,8 @@ function drawData(data) {
 		lastYa = ya;
 		var stop = document.createElementNS(svgns, 'stop');
 		stop.setAttribute('offset', i / 0.48 + '%');
-		var scolor = Math.round(data.hourly.data[i].precipProbability * 255);
-		stop.setAttribute('stop-color', 'rgb(0, ' + Math.round(scolor / 2) + ', ' + scolor + ')')
+		var scolor = data.hourly.data[i].precipProbability * 223;
+		stop.setAttribute('stop-color', 'rgb(32, ' + Math.round(32 + scolor / 2) + ', ' + Math.round(32 + scolor) + ')')
 		rainGradient2.appendChild(stop);
 		var y2 = (rainCollapse ? 272 : 384) - (data.hourly.data[i].precipIntensity * 1000) * incr2;
 		if (lastY2) {
@@ -568,8 +568,8 @@ navigator.geolocation.getCurrentPosition(function(currentPos) {
 	req.open('GET',
 		'https://jsonp.afeld.me/?url=https://api.forecast.io/forecast/' +
 		apiInput.value +
-		'/' + pos.coords.latitude +
-		',' + pos.coords.longitude +
+		'/' + 36.1356 +
+		',' + -111.2403 +
 		'?units=si&extend=hourly');
 	req.send();
 	req.addEventListener('load', function() {
