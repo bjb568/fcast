@@ -33,6 +33,10 @@ function createLine(x1, y1, x2, y2, color) {
 	return line;
 }
 
+function fixSummary(text) {
+	return text.replace(/(\d+)°C/g, function(t, d) {return parseInt(d) + 273 + '\u2006K';});
+}
+
 function drawData(data) {
 	console.log(data);
 	var cont = document.createElement('section');
@@ -47,7 +51,7 @@ function drawData(data) {
 	currentlySVG.appendChild(createText(792, 44, 32, 'end', '{' + data.currently.humidity.toFixed(2) + '} humidity'));
 	currentlySVG.appendChild(createText(792, 72, 18, 'end', '{' + (data.currently.dewPoint + 273.15).toFixed(2) + '}\u2006K dew point'));
 	currentlySVG.appendChild(createText(8, 96, 22, false, 'Feels like {' + (data.currently.apparentTemperature + 273.15).toFixed(2) + '}\u2006K'));
-	currentlySVG.appendChild(createText(8, 132, 30, false, '{' + data.currently.summary + '}'));
+	currentlySVG.appendChild(createText(8, 132, 30, false, '{' + fixSummary(data.currently.summary) + '}'));
 	currentlySVG.appendChild(createText(32, 160, 20, false, '{' + data.currently.cloudCover.toFixed(2) + '} cloud cover'));
 	if (typeof data.currently.precipProbability != 'undefined') {
 		currentlySVG.appendChild(createText(32, 184, 20, false, '{' + data.currently.precipProbability.toFixed(2) + '} chance of precipitation'));
@@ -62,7 +66,7 @@ function drawData(data) {
 	block1.appendChild(currentlySVG);
 	if (data.minutely) {
 		var minutelyTitle = document.createElement('h2');
-		minutelyTitle.appendChild(document.createTextNode(data.minutely.summary));
+		minutelyTitle.appendChild(document.createTextNode(fixSummary(data.minutely.summary)));
 		block1.appendChild(minutelyTitle);
 		var minutelySVG = document.createElementNS(svgns, 'svg');
 		minutelySVG.id = 'minutely';
@@ -161,7 +165,7 @@ function drawData(data) {
 	}
 	cont.appendChild(block1);
 	var hourlyTitle = document.createElement('h2');
-	hourlyTitle.appendChild(document.createTextNode(data.hourly.summary));
+	hourlyTitle.appendChild(document.createTextNode(fixSummary(data.hourly.summary)));
 	var block2 = document.createElement('div');
 	block2.appendChild(hourlyTitle);
 	var hourlySVG = document.createElementNS(svgns, 'svg');
@@ -540,7 +544,7 @@ function drawData(data) {
 	hourlySVG.appendChild(createLine(-14, 544 + a, -14, 592 + a, '#8f8'));
 	block2.appendChild(hourlySVG);
 	var dailyTitle = document.createElement('h2');
-	dailyTitle.appendChild(document.createTextNode(data.daily.summary));
+	dailyTitle.appendChild(document.createTextNode(fixSummary(data.daily.summary)));
 	cont.appendChild(block2);
 	var block3 = document.createElement('div');
 	block3.appendChild(dailyTitle);
