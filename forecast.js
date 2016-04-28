@@ -53,7 +53,7 @@ function drawData(data) {
 	currentTime.appendChild(document.createTextNode('Weather for ' + ('00' + now.getHours()).substr(-2) + ':' + ('00' + now.getMinutes()).substr(-2) + ':' + ('00' + now.getSeconds()).substr(-2) + ' Z' + (tz == 0 ? '' : tz < 0 ? '\u2006+\u2006' + tz / -60 : '\u2006−\u2006' + tz / 60)));
 	cont.appendChild(currentTime);
 	var currentlySVG = document.createElementNS(svgns, 'svg');
-	currentlySVG.setAttribute('viewBox', '0 0 800 240');
+	currentlySVG.setAttribute('viewBox', '0 0 784 240');
 	currentlySVG.appendChild(createText(8, 64, 64, false, '{' + (data.currently.temperature + 273.15).toFixed(2) + '}\u2006K'));
 	currentlySVG.appendChild(createText(400, 44, 32, false, '{' + data.currently.humidity.toFixed(2) + '} humidity'));
 	currentlySVG.appendChild(createText(400, 72, 18, false, '{' + (data.currently.dewPoint + 273.15).toFixed(2) + '}\u2006K dew point'));
@@ -64,7 +64,7 @@ function drawData(data) {
 		currentlySVG.appendChild(createText(32, 184, 20, false, '{' + data.currently.precipProbability.toFixed(2) + '} chance of precipitation'));
 		currentlySVG.appendChild(createText(64, 208, 20, false, 'at {' + (data.currently.precipIntensity * 1000).toFixed(0) + '}\u2006µm/hr'));
 	}
-	if (data.currently.visibility) currentlySVG.appendChild(createText(400, 160, 22, false, '{' + data.currently.visibility + '}\u2006km visibility'));
+	if (data.currently.visibility) currentlySVG.appendChild(createText(400, 160, 22, false, (data.currently.visibility > 16.08 ? '{Max}' : '{' + data.currently.visibility.toFixed(2) + '}\u2006km') + ' visibility'));
 	currentlySVG.appendChild(createText(400, 184, 20, false, 'Wind {' + data.currently.windSpeed.toFixed(2) + '}\u2006m/s'));
 	currentlySVG.appendChild(createText(432, 208, 20, false, 'from {' + (data.currently.windBearing / 360).toFixed(3) + '}τ clockwise of true north'));
 	currentlySVG.appendChild(createText(32, 232, 20, false, '{' + (data.currently.pressure * 100).toFixed(0) + '}\u2006Pa of atmospheric pressure'));
@@ -177,7 +177,7 @@ function drawData(data) {
 	block2.appendChild(hourlyTitle);
 	var hourlySVG = document.createElementNS(svgns, 'svg');
 	hourlySVG.id = 'hourly';
-	hourlySVG.setAttribute('viewBox', '-24 -12 800 676');
+	hourlySVG.setAttribute('viewBox', '-24 -12 776 676');
 	var min = Infinity,
 		max = -Infinity;
 	for (var i = 0; i < data.hourly.data.length; i++) {
@@ -202,7 +202,7 @@ function drawData(data) {
 	var max = 0;
 	for (var i = 0; i < data.hourly.data.length; i++) max = Math.max(max, data.hourly.data[i].precipIntensity * 1000);
 	var rainCollapse = max < 100;
-	if (rainCollapse) hourlySVG.setAttribute('viewBox', '-24 -12 800 564');
+	if (rainCollapse) hourlySVG.setAttribute('viewBox', '-24 -12 776 564');
 	max *= 1.3;
 	max = Math.max(max, rainCollapse ? 500 : 1100);
 	var p = 0;
@@ -399,7 +399,7 @@ function drawData(data) {
 		hourlySVG.appendChild(createText(i < 30 ? i * 15 + 42 : i * 15 + 24, y2 - 4, 14, i < 30 ? false : 'end', 'at {' + new Date(data.hourly.data[i].time * 1000).getHours() + ':00}'));
 		var y3 = (rainCollapse ? 366 : 478);
 		hourlySVG.appendChild(createText(i < 30 ? i * 15 + 42 : i * 15 + 24, y3 - 28, 14, i < 30 ? false : 'end', '{' + data.hourly.data[i].cloudCover.toFixed(2) + '} cloud cover'));
-		hourlySVG.appendChild(createText(i < 30 ? i * 15 + 42 : i * 15 + 24, y3 + 4, 14, i < 30 ? false : 'end', '{' + data.hourly.data[i].visibility.toFixed(2) + '}\u2006km visibility'));
+		hourlySVG.appendChild(createText(i < 30 ? i * 15 + 42 : i * 15 + 24, y3 + 4, 14, i < 30 ? false : 'end', (data.hourly.data[i].visibility > 16.08 ? '{Max}' : '{' + data.hourly.data[i].visibility.toFixed(2) + '}\u2006km') + ' visibility'));
 		hourlySVG.appendChild(createText(i < 30 ? i * 15 + 42 : i * 15 + 24, y3 + 20, 14, i < 30 ? false : 'end', 'at {' + new Date(data.hourly.data[i].time * 1000).getHours() + ':00}'));
 		hourlySVG.appendChild(createText(i < 30 ? i * 15 + 42 : i * 15 + 24, y5 - 20, 14, i < 30 ? false : 'end', '{' + (data.hourly.data[i].windSpeed).toFixed(2) + '}\u2006m/s'));
 		hourlySVG.appendChild(createText(i < 30 ? i * 15 + 42 : i * 15 + 24, y5 - 4, 14, i < 30 ? false : 'end', 'at {' + new Date(data.hourly.data[i].time * 1000).getHours() + ':00}'));
@@ -472,7 +472,7 @@ function drawData(data) {
 	hourlySVG.appendChild(createText(rainCollapse ? -368 : -472, -8, 20, false, 'Cloud'));
 	hourlySVG.lastChild.style.fill = '#eee';
 	hourlySVG.lastChild.setAttribute('transform', 'rotate(-90)');
-	hourlySVG.appendChild(createText(rainCollapse ? -406 : -510, 776, 20, false, 'Visibility'));
+	hourlySVG.appendChild(createText(rainCollapse ? -396 : -500, 18, 20, false, 'Visibility'));
 	hourlySVG.lastChild.style.fill = '#f96';
 	hourlySVG.lastChild.setAttribute('transform', 'rotate(-90)');
 	hourlySVG.appendChild(createText(rainCollapse ? -500 : -604, -8, 20, false, 'Wind'));
@@ -516,7 +516,7 @@ function drawData(data) {
 		}
 		p++;
 	}
-	dailySVG.appendChild(createText(430, 16, 14, false, 'K'));
+	dailySVG.appendChild(createText(436, 16, 14, false, 'K'));
 	function calcx(d) {
 		return 160 + 252 * (d - min) / range;
 	};
@@ -552,7 +552,7 @@ function drawData(data) {
 		dailySVG.appendChild(createText(486, 100 * i + 64, 16, false, '{' + k.summary + '}'));
 		dailySVG.appendChild(createLine(486, 100 * i + 68, 486 + Math.sqrt(k.precipIntensityMax) * 100, 100 * i + 68, '#0af'));
 		dailySVG.appendChild(createLine(486, 100 * i + 70, 486 + Math.sqrt(k.precipIntensity) * 100, 100 * i + 70, '#0af'));
-		dailySVG.appendChild(createText(486, 100 * i + 86, 14, false, '{' + k.precipProbability.toFixed(2) + '} change of precipitation at {' + (k.precipIntensity * 1000).toFixed(0) + '}\u2006µm/hr' + (k.precipIntensityMaxTime ? ', max of {' + (k.precipIntensityMax * 1000).toFixed(0) + '}\u2006µm/hr at {' + (new Date(k.precipIntensityMaxTime * 1000)).getHours() + '}' : '')));
+		dailySVG.appendChild(createText(486, 100 * i + 86, 14, false, '{' + k.precipProbability.toFixed(2) + '} change of precipitation at {' + (k.precipIntensity * 1000).toFixed(0) + '}\u2006µm/hr' + (k.precipIntensityMaxTime ? ', max of {' + (k.precipIntensityMax * 1000).toFixed(0) + '}\u2006µm/hr at {' + (new Date(k.precipIntensityMaxTime * 1000)).getHours() + '}:00' : '')));
 		dailySVG.appendChild(createLine(144, calcy(k.sunriseTime), 466, calcy(k.sunriseTime), '#888'));
 		dailySVG.appendChild(createLine(144, calcy(k.sunsetTime), 466, calcy(k.sunsetTime), '#444'));
 		var srt = new Date(k.sunriseTime * 1000);
@@ -600,21 +600,29 @@ if (localStorage.lastData) {
 	}
 }
 
-var apiInput = document.getElementById('api-key');
+var apiInput = document.getElementById('api-key'),
+	locationInput = document.getElementById('location');
 apiInput.value = localStorage.apiKey || apiInput.focus() || '';
+locationInput.value = localStorage.lastLocation;
 apiInput.oninput = function() {
 	localStorage.apiKey = this.value;
 };
-var pos;
-navigator.geolocation.getCurrentPosition(function(currentPos) {
-	pos = currentPos;
+locationInput.oninput = function() {
+	localStorage.lastLocation = this.value;
+};
+function refreshLocation() {
+	navigator.geolocation.getCurrentPosition(function(pos) {
+		localStorage.lastLocation = pos.coords.latitude + ',' + pos.coords.longitude;
+		location.reload();
+	}, function(e) {
+		alert('Error determining location.');
+		throw JSON.stringify(e);
+	});
+}
+if (!locationInput.value) refreshLocation();
+else {
 	var req = new XMLHttpRequest();
-	req.open('GET',
-		'https://jsonp.afeld.me/?url=https://api.forecast.io/forecast/' +
-		apiInput.value +
-		'/' + pos.coords.latitude +
-		',' + pos.coords.longitude +
-		'?units=si&extend=hourly');
+	req.open('GET', 'https://jsonp.afeld.me/?url=https://api.forecast.io/forecast/' + apiInput.value + '/' + locationInput.value + '?units=si&extend=hourly');
 	req.send();
 	req.addEventListener('load', function() {
 		var e = document.getElementsByTagName('section')[0];
@@ -625,8 +633,5 @@ navigator.geolocation.getCurrentPosition(function(currentPos) {
 			console.log(e);
 		}
 	});
-	console.log('Position recieved.');
-}, function(e) {
-	alert('Error determining location.');
-	throw JSON.stringify(e);
-});
+}
+document.getElementById('refresh-location').addEventListener('click', refreshLocation);
