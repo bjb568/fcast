@@ -603,7 +603,7 @@ if (localStorage.lastData) {
 var apiInput = document.getElementById('api-key'),
 	locationInput = document.getElementById('location');
 apiInput.value = localStorage.apiKey || apiInput.focus() || '';
-locationInput.value = localStorage.lastLocation;
+locationInput.value = localStorage.lastLocation || '';
 apiInput.oninput = function() {
 	localStorage.apiKey = this.value;
 };
