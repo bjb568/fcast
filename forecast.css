@@ -14,6 +14,7 @@ svg {
 	margin-top: 4px;
 	fill: #aaa;
 }
+#daily { max-width: 1200px }
 tspan { fill: #fff }
 h1 {
 	font-size: 1.9em;
@@ -47,6 +48,6 @@ h1, h2 {
 #hourly rect:not(:hover) + text + text + text + text + text + text + text + text + text + text + ellipse + ellipse + ellipse + ellipse + ellipse + ellipse { opacity: 0 }
 #minutely rect:not(:hover) + text, #minutely rect:not(:hover) + text + text, #minutely rect:not(:hover) + text + text + text, #minutely rect:not(:hover) + text + text + text + ellipse { opacity: 0 }
 #minutely path { fill: url(#rain-gradient) }
-#hourly path { fill: none }
+#hourly path, #daily path { fill: none }
 line { stroke: #fff }
 ellipse, text, line { pointer-events: none }
