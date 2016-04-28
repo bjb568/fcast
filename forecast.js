@@ -493,7 +493,7 @@ function drawData(data) {
 	block3.appendChild(dailyTitle);
 	var dailySVG = document.createElementNS(svgns, 'svg');
 	dailySVG.id = 'daily';
-	dailySVG.setAttribute('viewBox', '0 0 1200 720');
+	dailySVG.setAttribute('viewBox', '0 0 1024 720');
 	var min = Infinity,
 		max = -Infinity;
 	for (var i = 0; i < data.daily.data.length; i++) {
@@ -512,7 +512,7 @@ function drawData(data) {
 	for (var lx = 160; lx <= 412; lx += incr) {
 		if (p % s == 0) {
 			dailySVG.appendChild(createLine(lx, 18, lx, 720, '#333'));
-			dailySVG.appendChild(createText(lx, 14, 11, 'middle', p.toString()));
+			dailySVG.appendChild(createText(lx, 14, 12, 'middle', p.toString()));
 		}
 		p++;
 	}
@@ -548,10 +548,17 @@ function drawData(data) {
 		d2 += calcx(k.apparentTemperatureMin + 273.15) + ',' + calcy(k.apparentTemperatureMinTime) + 'L';
 		d3 += calcx(k.temperatureMax + 273.15) + ',' + calcy(k.temperatureMaxTime) + 'L';
 		d4 += calcx(k.apparentTemperatureMax + 273.15) + ',' + calcy(k.apparentTemperatureMaxTime) + 'L';
-		dailySVG.appendChild(createText(4, 100 * i + 72, 16, false, ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][(new Date(k.time * 1000)).getDay()]));
-		dailySVG.appendChild(createText(486, 100 * i + 72, 16, false, '{' + k.summary + '}'));
-		dailySVG.appendChild(createLine(144, calcy(k.sunriseTime), 466, calcy(k.sunriseTime), '#888')); //make text on left of line that says what time
+		dailySVG.appendChild(createText(4, 100 * i + 64, 16, false, ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][(new Date(k.time * 1000)).getDay()]));
+		dailySVG.appendChild(createText(486, 100 * i + 64, 16, false, '{' + k.summary + '}'));
+		dailySVG.appendChild(createLine(486, 100 * i + 68, 486 + Math.sqrt(k.precipIntensityMax) * 100, 100 * i + 68, '#0af'));
+		dailySVG.appendChild(createLine(486, 100 * i + 70, 486 + Math.sqrt(k.precipIntensity) * 100, 100 * i + 70, '#0af'));
+		dailySVG.appendChild(createText(486, 100 * i + 86, 14, false, '{' + k.precipProbability.toFixed(2) + '} change of precipitation at {' + (k.precipIntensity * 1000).toFixed(0) + '}\u2006µm/hr' + (k.precipIntensityMaxTime ? ', max of {' + (k.precipIntensityMax * 1000).toFixed(0) + '}\u2006µm/hr at {' + (new Date(k.precipIntensityMaxTime * 1000)).getHours() + '}' : '')));
+		dailySVG.appendChild(createLine(144, calcy(k.sunriseTime), 466, calcy(k.sunriseTime), '#888'));
 		dailySVG.appendChild(createLine(144, calcy(k.sunsetTime), 466, calcy(k.sunsetTime), '#444'));
+		var srt = new Date(k.sunriseTime * 1000);
+		dailySVG.appendChild(createText(140, calcy(k.sunriseTime) + 5, 12, 'end', '{' + srt.getHours() + ':' + srt.getMinutes() + '}'));
+		var sst = new Date(k.sunsetTime * 1000);
+		dailySVG.appendChild(createText(140, calcy(k.sunsetTime) + 5, 12, 'end', '{' + sst.getHours() + ':' + sst.getMinutes() + '}'));
 	}
 	dailySVG.appendChild(dailyGradient);
 	dailySVG.appendChild(dcGradient);
