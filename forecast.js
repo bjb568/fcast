@@ -512,7 +512,7 @@ function drawData(data) {
 		max = Math.max(max, data.daily.data[i].apparentTemperatureMax + 273.15);
 	}
 	var range = max - min,
-		s = Math.ceil(range / 4);
+		s = Math.ceil(range / 8);
 	max = Math.ceil((max + range / 10));
 	min = Math.floor((min - range / 10));
 	range = max - min;
@@ -525,7 +525,7 @@ function drawData(data) {
 		}
 		p++;
 	}
-	dailySVG.appendChild(createText(90, 16, 14, 'end', 'K'));
+	dailySVG.appendChild(createText(88, 16, 14, 'end', 'K'));
 	function calcx(d) {
 		return 104 + 252 * (d - min) / range;
 	};
