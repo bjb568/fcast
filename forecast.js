@@ -518,7 +518,7 @@ function drawData(data) {
 	range = max - min;
 	var p = min;
 	var incr = 252 / range;
-	for (var lx = 104; lx <= 356; lx += incr) {
+	for (var lx = 104; lx <= 368; lx += incr) {
 		if (p % s == 0) {
 			dailySVG.appendChild(createLine(lx, 16, lx, 520, '#333'));
 			dailySVG.appendChild(createText(lx, 14, 12, 'middle', p.toString()));
