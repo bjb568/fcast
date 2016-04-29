@@ -20,15 +20,42 @@ h1 {
 	font-size: 1.9em;
 	margin: 0.2em 0;
 }
+@media (max-width: 900px) {
+	h1 { font-size: 1.7em }
+	h2 { font-size: 1.3em }
+}
+@media (max-width: 600px) {
+	h1 { font-size: 1.5em }
+	h2 { font-size: 1.2em }
+}
+@media (max-width: 400px) {
+	h1 { font-size: 1.4em }
+	h2 { font-size: 1.1em }
+}
 h1, h2 {
 	flex-basis: 100%;
 	font-weight: normal;
 }
-@media (min-width: 1432px) {
-	div:not(:last-child) { width: calc(50% - 16px) }
+@media (min-width: 1432px) and (max-width: 2399px) {
+	div { width: calc(50% - 16px) }
 	div:nth-child(2) { float: left }
 	div:nth-child(3) { float: right }
-	div:nth-child(4) { clear: both }
+	div:nth-child(4) {
+		clear: left;
+		padding-top: 48px;
+	}
+}
+@media (min-width: 2400px) {
+	section {
+		display: flex;
+		flex-wrap: wrap;
+	}
+	h1 { width: 100% }
+	div {
+		flex-grow: 1;
+		flex-basis: 770px;
+	}
+	div:not(:last-child) { margin-right: 32px }
 }
 #hourly rect:not(:hover) + text,
 #hourly rect:not(:hover) + text + text,
