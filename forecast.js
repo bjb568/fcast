@@ -557,8 +557,8 @@ function drawData(data) {
 		d2 += calcx(k.apparentTemperatureMin + 273.15) + ',' + calcy(k.apparentTemperatureMinTime) + 'L';
 		d3 += calcx(k.temperatureMax + 273.15) + ',' + calcy(k.temperatureMaxTime) + 'L';
 		d4 += calcx(k.apparentTemperatureMax + 273.15) + ',' + calcy(k.apparentTemperatureMaxTime) + 'L';
-		dailySVG.appendChild(createText(4, calcy(k.time + 43200), 16, false, ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][(new Date(k.time * 1000)).getDay()]));
-		if (i) dailySVG.appendChild(createLine(54, calcy(k.time), 372, calcy(k.time), '#333'));
+		dailySVG.appendChild(createText(4, calcy(k.time + 43200) + 4, 16, false, ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][(new Date(k.time * 1000)).getDay()]));
+		if (i) dailySVG.insertBefore(createLine(0, calcy(k.time), 960, calcy(k.time), '#333'), dailySVG.firstChild);
 		dailySVG.appendChild(createText(392, calcy(k.time + 43200) - 4, 16, false, '{' + fixSummary(k.summary) + '}'));
 		dailySVG.appendChild(createLine(392, calcy(k.time + 43200), 392 + Math.sqrt(k.precipIntensityMax) * 100, calcy(k.time + 43200), '#0af'));
 		dailySVG.appendChild(createLine(392, calcy(k.time + 43200) + 2, 392 + Math.sqrt(k.precipIntensity) * 100, calcy(k.time + 43200) + 2, '#0af'));
