@@ -78,3 +78,10 @@ h1, h2 {
 #hourly path, #daily path { fill: none }
 line { stroke: #fff }
 ellipse, text, line { pointer-events: none }
+a {
+	color: #fff;
+	transition: color 0.1s;
+}
+a:visited { color: #ccc; }
+a:hover { color: #4ee }
+a:active { color: #faa }
