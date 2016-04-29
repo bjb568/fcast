@@ -14,7 +14,7 @@ svg {
 	margin-top: 4px;
 	fill: #aaa;
 }
-#daily { max-width: 1200px }
+#daily { max-width: 960px }
 tspan { fill: #fff }
 h1 {
 	font-size: 1.9em;
