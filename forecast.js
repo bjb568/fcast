@@ -502,7 +502,7 @@ function drawData(data) {
 	block3.appendChild(dailyTitle);
 	var dailySVG = document.createElementNS(svgns, 'svg');
 	dailySVG.id = 'daily';
-	dailySVG.setAttribute('viewBox', '0 0 960 464');
+	dailySVG.setAttribute('viewBox', innerWidth >= 2400 ? '0 0 960 764' : '0 0 960 464');
 	var min = Infinity,
 		max = -Infinity;
 	for (var i = 0; i < data.daily.data.length; i++) {
@@ -530,7 +530,7 @@ function drawData(data) {
 		return 104 + 252 * (d - min) / range;
 	};
 	function calcy(d) {
-		return 16 + 448 * (d - data.daily.data[0].time) / 86400 / 8;
+		return 16 + (innerWidth >= 2400 ? 748 : 448) * (d - data.daily.data[0].time) / 86400 / 8;
 	};
 	var dailyGradient = document.createElementNS(svgns, 'linearGradient');
 	dailyGradient.id = 'daily-gradient';
@@ -645,3 +645,12 @@ else {
 	});
 }
 document.getElementById('refresh-location').addEventListener('click', refreshLocation);
+var lastInnerWidth = innerWidth;
+addEventListener('resize', function() {
+	if ((lastInnerWidth < 2400) != (innerWidth < 2400)) {
+		var e = document.getElementsByTagName('section')[0];
+		if (e) e.parentNode.removeChild(e);
+		drawData(JSON.parse(localStorage.lastData));
+	}
+	lastInnerWidth = innerWidth;
+});
