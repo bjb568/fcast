@@ -67,7 +67,7 @@ function drawData(data) {
 	currentlySVG.appendChild(createText(8, 132, 30, false, '{' + fixSummary(data.currently.summary) + '}'));
 	currentlySVG.appendChild(createText(32, 160, 20, false, '{' + data.currently.cloudCover.toFixed(2) + '} cloud cover'));
 	if (!isNaN(data.currently.precipProbability)) {
-		currentlySVG.appendChild(createText(32, 184, 20, false, '{' + data.currently.precipProbability.toFixed(2) + '} chance of ' + (data.currently.precipType || 'precip.')));
+		currentlySVG.appendChild(createText(32, 184, 20, false, '{' + data.currently.precipProbability.toFixed(2) + '} chance of ' + (data.currently.precipType || 'pcpn')));
 		currentlySVG.appendChild(createText(64, 208, 20, false, 'at {' + (data.currently.precipIntensity * 1000).toFixed(0) + '}\u2006µm/hr'));
 	}
 	if (data.currently.visibility) currentlySVG.appendChild(createText(400, 160, 22, false, (data.currently.visibility > 16.08 ? '{Max}' : '{' + data.currently.visibility.toFixed(2) + '}\u2006km') + ' visibility'));
@@ -152,7 +152,7 @@ function drawData(data) {
 			rect.setAttribute('height', 220);
 			rect.style.opacity = 0;
 			minutelySVG.appendChild(rect);
-			minutelySVG.appendChild(createText(i < 44 ? i * 12 + 42 : i * 12 + 24, y - 36, 14, i < 44 ? false : 'end', '{' + (data.minutely.data[i].precipProbability).toFixed(2) + '} chance of ' + (data.minutely.data[i].precipType || 'precip.')));
+			minutelySVG.appendChild(createText(i < 44 ? i * 12 + 42 : i * 12 + 24, y - 36, 14, i < 44 ? false : 'end', '{' + (data.minutely.data[i].precipProbability).toFixed(2) + '} chance of ' + (data.minutely.data[i].precipType || 'pcpn')));
 			minutelySVG.appendChild(createText(i < 44 ? i * 12 + 42 : i * 12 + 24, y - 20, 14, i < 44 ? false : 'end', '{' + (data.minutely.data[i].precipIntensity * 1000).toFixed(0) + '}\u2006µm/hr'));
 			var now = new Date(data.minutely.data[i].time * 1000);
 			minutelySVG.appendChild(createText(i < 44 ? i * 12 + 42 : i * 12 + 24, y - 4, 14, i < 44 ? false : 'end', 'at {' + ('00' + now.getHours()).substr(-2) + ':' + ('00' + now.getMinutes()).substr(-2) + '}'));
@@ -399,7 +399,7 @@ function drawData(data) {
 		hourlySVG.appendChild(rect);
 		hourlySVG.appendChild(createText(i < 30 ? i * 15 + 42 : i * 15 + 24, y, 14, i < 30 ? false : 'end', '{' + (data.hourly.data[i].temperature + 273.15).toFixed(2) + '}\u2006K, {' + (data.hourly.data[i].humidity).toFixed(2) + '} humidity'));
 		hourlySVG.appendChild(createText(i < 30 ? i * 15 + 42 : i * 15 + 24, y + 16, 14, i < 30 ? false : 'end', 'at {' + new Date(data.hourly.data[i].time * 1000).getHours() + ':00}'));
-		hourlySVG.appendChild(createText(i < 30 ? i * 15 + 42 : i * 15 + 24, y2 - 36, 14, i < 30 ? false : 'end', '{' + (data.hourly.data[i].precipProbability).toFixed(2) + '} chance of ' + (data.hourly.data[i].precipType || 'precip.')));
+		hourlySVG.appendChild(createText(i < 30 ? i * 15 + 42 : i * 15 + 24, y2 - 36, 14, i < 30 ? false : 'end', '{' + (data.hourly.data[i].precipProbability).toFixed(2) + '} chance of ' + (data.hourly.data[i].precipType || 'pcpn')));
 		if (rainCollapse) hourlySVG.lastChild.style.opacity = 0;
 		hourlySVG.appendChild(createText(i < 30 ? i * 15 + 42 : i * 15 + 24, y2 - 20, 14, i < 30 ? false : 'end', '{' + (data.hourly.data[i].precipIntensity * 1000).toFixed(0) + '}\u2006µm/hr'));
 		hourlySVG.appendChild(createText(i < 30 ? i * 15 + 42 : i * 15 + 24, y2 - 4, 14, i < 30 ? false : 'end', 'at {' + new Date(data.hourly.data[i].time * 1000).getHours() + ':00}'));
@@ -520,7 +520,7 @@ function drawData(data) {
 	var incr = 252 / range;
 	for (var lx = 104; lx <= 368; lx += incr) {
 		if (p % s == 0) {
-			dailySVG.appendChild(createLine(lx, 16, lx, 520, '#333'));
+			dailySVG.appendChild(createLine(lx, 16, lx, 764, '#333'));
 			dailySVG.appendChild(createText(lx, 14, 12, 'middle', p.toString()));
 		}
 		p++;
@@ -540,9 +540,7 @@ function drawData(data) {
 	dcGradient.setAttribute('x1', '0');
 	dcGradient.setAttribute('x2', '0');
 	var d1 = 'M',
-		d2 = 'M',
-		d3 = 'M',
-		d4 = 'M';
+		d2 = 'M';
 	for (var i = 0; i < data.daily.data.length; i++) {
 		var k = data.daily.data[i];
 		var stop = document.createElementNS(svgns, 'stop');
@@ -553,16 +551,19 @@ function drawData(data) {
 		stop.setAttribute('offset', ((k.time - data.daily.data[0].time) / 864 + 50) / 8 + '%');
 		stop.setAttribute('stop-color', 'hsl(0, 0%, ' + (100 - k.cloudCover * 95) + '%)');
 		dcGradient.appendChild(stop);
-		d1 += calcx(k.temperatureMin + 273.15) + ',' + calcy(k.temperatureMinTime) + 'L';
-		d2 += calcx(k.apparentTemperatureMin + 273.15) + ',' + calcy(k.apparentTemperatureMinTime) + 'L';
-		d3 += calcx(k.temperatureMax + 273.15) + ',' + calcy(k.temperatureMaxTime) + 'L';
-		d4 += calcx(k.apparentTemperatureMax + 273.15) + ',' + calcy(k.apparentTemperatureMaxTime) + 'L';
+		d1 += k.temperatureMinTime < k.temperatureMaxTime ?
+			calcx(k.temperatureMin + 273.15) + ',' + calcy(k.temperatureMinTime) + 'L' + calcx(k.temperatureMax + 273.15) + ',' + calcy(k.temperatureMaxTime) + 'L' :
+			calcx(k.temperatureMax + 273.15) + ',' + calcy(k.temperatureMaxTime) + 'L' + calcx(k.temperatureMin + 273.15) + ',' + calcy(k.temperatureMinTime) + 'L';
+		d2 += k.apparentTemperatureMinTime < k.apparentTemperatureMaxTime ?
+			calcx(k.apparentTemperatureMin + 273.15) + ',' + calcy(k.apparentTemperatureMinTime) + 'L' + calcx(k.apparentTemperatureMax + 273.15) + ',' + calcy(k.apparentTemperatureMaxTime) + 'L' :
+			calcx(k.apparentTemperatureMax + 273.15) + ',' + calcy(k.apparentTemperatureMaxTime) + 'L' + calcx(k.apparentTemperatureMin + 273.15) + ',' + calcy(k.apparentTemperatureMinTime) + 'L';
 		dailySVG.appendChild(createText(4, calcy(k.time + 43200) + 4, 16, false, ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][(new Date(k.time * 1000)).getDay()]));
 		if (i) dailySVG.insertBefore(createLine(0, calcy(k.time), 960, calcy(k.time), '#333'), dailySVG.firstChild);
-		dailySVG.appendChild(createText(392, calcy(k.time + 43200) - 4, 16, false, '{' + fixSummary(k.summary) + '}'));
-		dailySVG.appendChild(createLine(392, calcy(k.time + 43200), 392 + Math.sqrt(k.precipIntensityMax) * 100, calcy(k.time + 43200), '#0af'));
-		dailySVG.appendChild(createLine(392, calcy(k.time + 43200) + 2, 392 + Math.sqrt(k.precipIntensity) * 100, calcy(k.time + 43200) + 2, '#0af'));
-		dailySVG.appendChild(createText(392, calcy(k.time + 43200) + 18, 14, false, '{' + k.precipProbability.toFixed(2) + '} chance of ' + (k.precipType || 'precip.') + ' at {' + (k.precipIntensity * 1000).toFixed(0) + '}\u2006µm/hr' + (k.precipIntensityMaxTime ? ', max of {' + (k.precipIntensityMax * 1000).toFixed(0) + '}\u2006µm/hr at {' + (new Date(k.precipIntensityMaxTime * 1000)).getHours() + '}:00' : '')));
+		dailySVG.appendChild(createText(400, calcy(k.time + 43200) - 4, 16, false, '{' + fixSummary(k.summary) + '}'));
+		dailySVG.appendChild(createLine(400, calcy(k.time + 43200) + 1, 400 + Math.sqrt(k.precipIntensity) * 100, calcy(k.time + 43200) + 1, '#0af'));
+		dailySVG.appendChild(createLine(400, calcy(k.time + 43200) + 2, 400 + Math.sqrt(k.precipIntensityMax) * 100, calcy(k.time + 43200) + 2, '#0af'));
+		dailySVG.appendChild(createLine(400, calcy(k.time + 43200) + 3, 400 + Math.sqrt(k.precipIntensity) * 100, calcy(k.time + 43200) + 3, '#0af'));
+		dailySVG.appendChild(createText(400, calcy(k.time + 43200) + 18, 14, false, '{' + k.precipProbability.toFixed(2) + '} chance of ' + (k.precipType || 'pcpn') + ' at {' + (k.precipIntensity * 1000).toFixed(0) + '}\u2006µm/hr' + (k.precipIntensityMaxTime ? ', max of {' + (k.precipIntensityMax * 1000).toFixed(0) + '}\u2006µm/hr at {' + (new Date(k.precipIntensityMaxTime * 1000)).getHours() + '}:00' : '')));
 		if (k.sunriseTime) dailySVG.appendChild(createLine(104, calcy(k.sunriseTime), 372, calcy(k.sunriseTime), '#990'));
 		if (k.sunsetTime) dailySVG.appendChild(createLine(104, calcy(k.sunsetTime), 372, calcy(k.sunsetTime), '#740'));
 		var srt = new Date(k.sunriseTime * 1000);
@@ -578,15 +579,6 @@ function drawData(data) {
 	dailySVG.appendChild(path);
 	var path = document.createElementNS(svgns, 'path');
 	path.setAttribute('d', d2.substr(0, d2.length - 1));
-	path.style.stroke = 'url(#daily-gradient)';
-	path.style.opacity = 0.6;
-	dailySVG.appendChild(path);
-	var path = document.createElementNS(svgns, 'path');
-	path.setAttribute('d', d3.substr(0, d3.length - 1));
-	path.style.stroke = 'url(#daily-gradient)';
-	dailySVG.appendChild(path);
-	var path = document.createElementNS(svgns, 'path');
-	path.setAttribute('d', d4.substr(0, d4.length - 1));
 	path.style.stroke = 'url(#daily-gradient)';
 	path.style.opacity = 0.6;
 	dailySVG.appendChild(path);
