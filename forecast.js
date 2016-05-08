@@ -502,7 +502,7 @@ function drawData(data) {
 	block3.appendChild(dailyTitle);
 	var dailySVG = document.createElementNS(svgns, 'svg');
 	dailySVG.id = 'daily';
-	dailySVG.setAttribute('viewBox', innerWidth >= 2400 ? '0 0 960 764' : '0 0 960 464');
+	dailySVG.setAttribute('viewBox', innerWidth >= 2400 ? '0 0 960 786' : '0 0 960 496');
 	var min = Infinity,
 		max = -Infinity;
 	for (var i = 0; i < data.daily.data.length; i++) {
@@ -520,7 +520,7 @@ function drawData(data) {
 	var incr = 252 / range;
 	for (var lx = 104; lx <= 368; lx += incr) {
 		if (p % s == 0) {
-			dailySVG.appendChild(createLine(lx, 16, lx, 764, '#333'));
+			dailySVG.appendChild(createLine(lx, 16, lx, 790, '#333'));
 			dailySVG.appendChild(createText(lx, 14, 12, 'middle', p.toString()));
 		}
 		p++;
@@ -530,7 +530,7 @@ function drawData(data) {
 		return 104 + 252 * (d - min) / range;
 	};
 	function calcy(d) {
-		return 16 + (innerWidth >= 2400 ? 748 : 448) * (d - data.daily.data[0].time) / 86400 / 8;
+		return 16 + (innerWidth >= 2400 ? 748 : 468) * (d - data.daily.data[0].time) / 86400 / 8;
 	};
 	var dailyGradient = document.createElementNS(svgns, 'linearGradient');
 	dailyGradient.id = 'daily-gradient';
@@ -559,11 +559,16 @@ function drawData(data) {
 			calcx(k.apparentTemperatureMax + 273.15) + ',' + calcy(k.apparentTemperatureMaxTime) + 'L' + calcx(k.apparentTemperatureMin + 273.15) + ',' + calcy(k.apparentTemperatureMinTime) + 'L';
 		dailySVG.appendChild(createText(4, calcy(k.time + 43200) + 4, 16, false, ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][(new Date(k.time * 1000)).getDay()]));
 		if (i) dailySVG.insertBefore(createLine(0, calcy(k.time), 960, calcy(k.time), '#333'), dailySVG.firstChild);
-		dailySVG.appendChild(createText(400, calcy(k.time + 43200) - 4, 16, false, '{' + fixSummary(k.summary) + '}'));
-		dailySVG.appendChild(createLine(400, calcy(k.time + 43200) + 1, 400 + Math.sqrt(k.precipIntensity) * 100, calcy(k.time + 43200) + 1, '#0af'));
-		dailySVG.appendChild(createLine(400, calcy(k.time + 43200) + 2, 400 + Math.sqrt(k.precipIntensityMax) * 100, calcy(k.time + 43200) + 2, '#0af'));
-		dailySVG.appendChild(createLine(400, calcy(k.time + 43200) + 3, 400 + Math.sqrt(k.precipIntensity) * 100, calcy(k.time + 43200) + 3, '#0af'));
-		dailySVG.appendChild(createText(400, calcy(k.time + 43200) + 18, 14, false, '{' + k.precipProbability.toFixed(2) + '} chance of ' + (k.precipType || 'pcpn') + ' at {' + (k.precipIntensity * 1000).toFixed(0) + '}\u2006µm/hr' + (k.precipIntensityMaxTime ? ', max of {' + (k.precipIntensityMax * 1000).toFixed(0) + '}\u2006µm/hr at {' + (new Date(k.precipIntensityMaxTime * 1000)).getHours() + '}:00' : '')));
+		dailySVG.appendChild(createText(400, calcy(k.time + 43200) - 6, 16, false, '{' + fixSummary(k.summary) + '}'));
+		var rect = document.createElementNS(svgns, 'rect');
+		rect.setAttribute('x', 400);
+		rect.setAttribute('y', calcy(k.time + 43200));
+		rect.setAttribute('width', Math.sqrt(k.precipIntensity) * 100);
+		rect.setAttribute('height', 5);
+		rect.style.fill = '#0af';
+		dailySVG.appendChild(rect);
+		dailySVG.appendChild(createLine(400, calcy(k.time + 43200) + 3, 400 + Math.sqrt(k.precipIntensityMax) * 100, calcy(k.time + 43200) + 3, '#0af'));
+		dailySVG.appendChild(createText(400, calcy(k.time + 43200) + 19, 14, false, '{' + k.precipProbability.toFixed(2) + '} chance of ' + (k.precipType || 'pcpn') + ' at {' + (k.precipIntensity * 1000).toFixed(0) + '}\u2006µm/hr' + (k.precipIntensityMaxTime ? ', max of {' + (k.precipIntensityMax * 1000).toFixed(0) + '}\u2006µm/hr at {' + (new Date(k.precipIntensityMaxTime * 1000)).getHours() + '}:00' : '')));
 		if (k.sunriseTime) dailySVG.appendChild(createLine(104, calcy(k.sunriseTime), 372, calcy(k.sunriseTime), '#990'));
 		if (k.sunsetTime) dailySVG.appendChild(createLine(104, calcy(k.sunsetTime), 372, calcy(k.sunsetTime), '#740'));
 		var srt = new Date(k.sunriseTime * 1000);
@@ -586,7 +591,7 @@ function drawData(data) {
 	rect.setAttribute('x', 372);
 	rect.setAttribute('y', 18);
 	rect.setAttribute('width', 12);
-	rect.setAttribute('height', 702);
+	rect.setAttribute('height', innerWidth >= 2400 ? 746 : 466);
 	rect.style.fill = 'url(#dc-gradient)';
 	dailySVG.appendChild(rect);
 	block3.appendChild(dailySVG);
