@@ -152,6 +152,7 @@ function drawData(data) {
 			rect.setAttribute('height', 220);
 			rect.style.opacity = 0;
 			minutelySVG.appendChild(rect);
+			if (rainCollapse) y = 216;
 			minutelySVG.appendChild(createText(i < 44 ? i * 12 + 42 : i * 12 + 24, y - 36, 14, i < 44 ? false : 'end', '{' + (data.minutely.data[i].precipProbability).toFixed(2) + '} chance of ' + (data.minutely.data[i].precipType || 'pcpn')));
 			minutelySVG.appendChild(createText(i < 44 ? i * 12 + 42 : i * 12 + 24, y - 20, 14, i < 44 ? false : 'end', '{' + (data.minutely.data[i].precipIntensity * 1000).toFixed(0) + '}\u2006µm/hr'));
 			var now = new Date(data.minutely.data[i].time * 1000);
