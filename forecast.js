@@ -565,12 +565,12 @@ function drawData(data) {
 		dailySVG.appendChild(createText(400, calcy(k.time + 43200) - 6, 16, false, '{' + fixSummary(k.summary) + '}'));
 		var rect = document.createElementNS(svgns, 'rect');
 		rect.setAttribute('x', 400);
-		rect.setAttribute('y', calcy(k.time + 43200));
+		rect.setAttribute('y', calcy(k.time + 43200) - 1);
 		rect.setAttribute('width', Math.sqrt(k.precipIntensity) * 100);
-		rect.setAttribute('height', 5);
+		rect.setAttribute('height', 6);
 		rect.style.fill = '#0af';
 		dailySVG.appendChild(rect);
-		dailySVG.appendChild(createLine(400, calcy(k.time + 43200) + 3, 400 + Math.sqrt(k.precipIntensityMax) * 100, calcy(k.time + 43200) + 3, '#0af'));
+		dailySVG.appendChild(createLine(400, calcy(k.time + 43200) + 2, 400 + Math.sqrt(k.precipIntensityMax) * 100, calcy(k.time + 43200) + 2, '#0af'));
 		dailySVG.appendChild(createText(400, calcy(k.time + 43200) + 19, 14, false, '{' + k.precipProbability.toFixed(2) + '} chance of ' + (k.precipType || 'pcpn') + ' at {' + (k.precipIntensity * 1000).toFixed(0) + '}\u2006µm/hr' + (k.precipIntensityMaxTime ? ', max of {' + (k.precipIntensityMax * 1000).toFixed(0) + '}\u2006µm/hr at {' + (new Date(k.precipIntensityMaxTime * 1000)).getHours() + '}:00' : '')));
 		if (k.sunriseTime) dailySVG.appendChild(createLine(104, calcy(k.sunriseTime), 372, calcy(k.sunriseTime), '#990'));
 		if (k.sunsetTime) dailySVG.appendChild(createLine(104, calcy(k.sunsetTime), 372, calcy(k.sunsetTime), '#740'));
