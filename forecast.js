@@ -534,6 +534,9 @@ function drawData(data) {
 	};
 	var dailyGradient = document.createElementNS(svgns, 'linearGradient');
 	dailyGradient.id = 'daily-gradient';
+	dailyGradient.setAttribute('y2', '1');
+	dailyGradient.setAttribute('x1', '0');
+	dailyGradient.setAttribute('x2', '0');
 	var dcGradient = document.createElementNS(svgns, 'linearGradient');
 	dcGradient.id = 'dc-gradient';
 	dcGradient.setAttribute('y2', '1');
