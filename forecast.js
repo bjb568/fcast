@@ -86,7 +86,7 @@ function drawData(data) {
 		minutelySVG.setAttribute('viewBox', '-24 0 800 240');
 		var max = 1;
 		for (var i = 0; i < data.minutely.data.length; i++) max = Math.max(max, data.minutely.data[i].precipIntensity * 1000);
-		var rainCollapse = max < 100;
+		var rainCollapse = max < 50;
 		if (rainCollapse) minutelySVG.setAttribute('viewBox', '-24 184 800 56');
 		max *= 1.3;
 		max = Math.max(max, rainCollapse ? 500 : 1050);
@@ -207,7 +207,7 @@ function drawData(data) {
 	hourlySVG.appendChild(createText(4, 236, 14, false, 'K'));
 	var max = 0;
 	for (var i = 0; i < data.hourly.data.length; i++) max = Math.max(max, data.hourly.data[i].precipIntensity * 1000);
-	var rainCollapse = max < 100;
+	var rainCollapse = max < 50;
 	if (rainCollapse) hourlySVG.setAttribute('viewBox', '-24 -12 776 564');
 	max *= 1.3;
 	max = Math.max(max, rainCollapse ? 500 : 1100);
