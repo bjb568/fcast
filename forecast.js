@@ -630,10 +630,9 @@ function refreshLocation() {
 		throw JSON.stringify(e);
 	});
 }
-if (!locationInput.value) refreshLocation();
-else {
+function refresh() {
 	var req = new XMLHttpRequest();
-	req.open('GET', 'https://jsonp.afeld.me/?url=https://api.forecast.io/forecast/' + apiInput.value + '/' + locationInput.value + '?units=si&extend=hourly');
+	req.open('GET', 'https://jsonp.afeld.me/?url=https://api.forecast.io/forecast/' + apiInput.value + '/' + locationInput.value + '?units=si&extend=hourly&v=' + Math.random());
 	req.send();
 	req.addEventListener('load', function() {
 		var e = document.getElementsByTagName('section')[0];
@@ -642,6 +641,18 @@ else {
 			drawData(JSON.parse(localStorage.lastData = this.responseText));
 		} catch(e) {
 			console.log(e);
+		}
+	});
+}
+if (!locationInput.value) refreshLocation();
+else {
+	refresh();
+	var interval = setInterval(refresh, 300000);
+	document.addEventListener('visibilitychange', function() {
+		if (document.hidden) clearInterval(interval);
+		else {
+			refresh();
+			interval = setInterval(refresh, 300000);
 		}
 	});
 }
