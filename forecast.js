@@ -200,7 +200,7 @@ function drawData(data) {
 	var incr = 212 / (max - min);
 	for (var ly = 216; ly >= 4; ly -= incr) {
 		if (p % 2 == 0 || range < 12) {
-			hourlySVG.appendChild(createLine(24, ly, 754, ly, '#333'));
+			hourlySVG.appendChild(createLine(33, ly, 754, ly, '#333'));
 			hourlySVG.appendChild(createText(20, ly + 4, 11, 'end', p.toString()));
 		}
 		p++;
@@ -216,7 +216,7 @@ function drawData(data) {
 	var incr2 = 144 / max;
 	for (var ly = rainCollapse ? 272 : 384; ly > 248; ly -= incr2) {
 		if (p % (max < 1500 ? 200 : max < 3000 ? 500 : max < 7000 ? 1000 : 2000) == 0) {
-			hourlySVG.appendChild(createLine(24, ly, 753, ly, '#333'));
+			hourlySVG.appendChild(createLine(33, ly, 753, ly, '#333'));
 			hourlySVG.appendChild(createText(20, ly + 4, 11, 'end', (p / 1000).toFixed(1)));
 		}
 		p++;
@@ -229,7 +229,7 @@ function drawData(data) {
 	var incr5 = 100 / max;
 	for (var ly = rainCollapse ? 520 : 632; ly > (rainCollapse ? 420 : 532); ly -= incr5) {
 		if (p % (max < 6 ? 1 : max < 12 ? 2 : max < 24 ? 4 : 8) == 0) {
-			hourlySVG.appendChild(createLine(24, ly, 753, ly, '#333'));
+			hourlySVG.appendChild(createLine(33, ly, 753, ly, '#333'));
 			hourlySVG.appendChild(createText(20, ly + 4, 11, 'end', p.toString()));
 		}
 		p++;
