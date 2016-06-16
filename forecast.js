@@ -253,7 +253,7 @@ function drawData(data) {
 	var lastlastYa = undefined,
 		lastYa = undefined,
 		nextControla = undefined,
-		da = 'M',
+		da = 'M33,-100 L' + (data.hourly.data.length * 15 + 18) + ',-100',
 		ma = 0.5;
 	var lastlastY2 = undefined,
 		lastY2 = undefined,
@@ -267,6 +267,10 @@ function drawData(data) {
 		m5 = 0.5;
 	var hourlyGradient = document.createElementNS(svgns, 'linearGradient');
 	hourlyGradient.id = 'hourly-gradient';
+	hourlyGradient.setAttribute('x1', '0');
+	hourlyGradient.setAttribute('y1', '0');
+	hourlyGradient.setAttribute('x2', '1');
+	hourlyGradient.setAttribute('y2', '0');
 	var rainGradient2 = document.createElementNS(svgns, 'linearGradient');
 	rainGradient2.id = 'rain-gradient2';
 	var hcGradient = document.createElementNS(svgns, 'linearGradient');
@@ -311,31 +315,35 @@ function drawData(data) {
 		} else d += (i * 15 + 33) + ',' + y + ' C';
 		lastlastY = lastY;
 		lastY = y;
-		var ya = 216 - (data.hourly.data[i].apparentTemperature + 273.15 - min) * incr;
+		var ya = data.hourly.data[i].temperature == data.hourly.data[i].apparentTemperature ? undefined : 216 - (data.hourly.data[i].apparentTemperature + 273.15 - min) * incr;
 		if (lastYa) {
-			if (i > 1) da += nextControla.x + ',' + nextControla.y + ' ' + (i * 15 + 18 - 15 * ma) + ',' + (lastYa + ma * (lastYa - ya)) + ' ' + (i * 15 + 18) + ',' + lastYa + ' ';
+			if (i > 1 && ya && nextControla) da += nextControla.x + ',' + nextControla.y + ' ' + (i * 15 + 18 - 15 * ma) + ',' + (lastYa + ma * (lastYa - ya)) + ' ' + (i * 15 + 18) + ',' + lastYa + ' ';
 			var circle = document.createElementNS(svgns, 'ellipse');
 			circle.setAttribute('cx', i * 15 + 18);
 			circle.setAttribute('cy', lastYa);
 			circle.setAttribute('rx', 4);
 			circle.setAttribute('ry', 4);
 			hourlySVG.appendChild(circle);
-			if (lastlastYa) {
+			if (lastlastYa && ya) {
 				ma = 1 / (2 + 0.2 * Math.pow(Math.abs((lastlastYa - lastYa) - (lastYa - ya)), 1.5));
 				nextControla = {
 					x: i * 15 + 18 + 15 * ma,
 					y: lastYa - ma * (lastlastYa - lastYa)
 				};
-			} else {
+			} else if (ya) {
 				nextControla = {
-					x: lastlastYa ? i * 15 + 18 + 15 * n : i * 15 + 18,
-					y: lastlastYa ? lastYa - ma * (lastlastYa - lastYa) : lastYa
+					x: i * 15 + 18,
+					y: lastYa
 				};
+			} else nextControla = undefined;
+			if (i == data.hourly.data.length - 1 || (nextControla && data.hourly.data[i + 1].temperature == data.hourly.data[i + 1].apparentTemperature)) {
+				da += nextControla.x + ',' + nextControla.y + ' ' + (i * 15 + 33) + ',' + ya + ' ' + (i * 15 + 33) + ',' + ya;
 			}
-			if (i == data.hourly.data.length - 1) da += nextControla.x + ',' + nextControla.y + ' ' + (i * 15 + 33) + ',' + ya + ' ' + (i * 15 + 33) + ',' + ya;
-		} else da += (i * 15 + 33) + ',' + ya + ' C';
-		lastlastYa = lastYa;
-		lastYa = ya;
+		} else if (ya) da += ' M' + (i * 15 + 33) + ',' + ya + ' C';
+		if (ya) {
+			lastlastYa = lastYa;
+			lastYa = ya;
+		} else lastlastYa = lastYa = undefined;
 		var stop = document.createElementNS(svgns, 'stop');
 		stop.setAttribute('offset', i / 0.48 + '%');
 		var scolor = data.hourly.data[i].precipProbability * 223;
