@@ -572,7 +572,11 @@ function drawData(data) {
 		rect.style.fill = '#0af';
 		dailySVG.appendChild(rect);
 		dailySVG.appendChild(createLine(400, calcy(k.time + 43200) + 2, 400 + Math.sqrt(k.precipIntensityMax) * 100, calcy(k.time + 43200) + 2, '#0af'));
-		dailySVG.appendChild(createText(400, calcy(k.time + 43200) + 19, 14, false, '{' + k.precipProbability.toFixed(2) + '} chance of ' + (k.precipType || 'pcpn') + ' at {' + (k.precipIntensity * 1000).toFixed(0) + '}\u2006µm/hr' + (k.precipIntensityMaxTime ? ', max of {' + (k.precipIntensityMax * 1000).toFixed(0) + '}\u2006µm/hr at {' + (new Date(k.precipIntensityMaxTime * 1000)).getHours() + '}:00' : '')));
+		var dayRainText = '';
+		if (k.precipIntensity) dayRainText += '{' + k.precipProbability.toFixed(2) + '} chance of ' + (k.precipType || 'pcpn') + ' at {' + (k.precipIntensity * 1000).toFixed(0) + '}\u2006µm/hr';
+		else dayRainText += 'No pcpn';
+		if (k.precipIntensityMaxTime) dayRainText += ', max of {' + (k.precipIntensityMax * 1000).toFixed(0) + '}\u2006µm/hr at {' + (new Date(k.precipIntensityMaxTime * 1000)).getHours() + '}:00';
+		dailySVG.appendChild(createText(400, calcy(k.time + 43200) + 19, 14, false, dayRainText));
 		if (k.sunriseTime) dailySVG.appendChild(createLine(104, calcy(k.sunriseTime), 372, calcy(k.sunriseTime), '#990'));
 		if (k.sunsetTime) dailySVG.appendChild(createLine(104, calcy(k.sunsetTime), 372, calcy(k.sunsetTime), '#740'));
 		var srt = new Date(k.sunriseTime * 1000);
