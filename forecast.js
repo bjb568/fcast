@@ -642,18 +642,23 @@ function refreshLocation() {
 		throw JSON.stringify(e);
 	});
 }
+var timeout;
 function refresh() {
+	if (!timeout && new Date().getTime() - localStorage.lastRefresh < 6000) return timeout = setTimeout(refresh, 6000 - new Date().getTime() + +localStorage.lastRefresh);
+	timeout = false;
+	localStorage.lastRefresh = new Date().getTime();
 	var req = new XMLHttpRequest();
-	req.open('GET', 'https://jsonp.afeld.me/?url=https://api.forecast.io/forecast/' + apiInput.value + '/' + locationInput.value + '?units=si&extend=hourly&v=' + Math.random());
+	req.open('GET', 'https://alloworigin.com/get?url=' + encodeURIComponent('https://api.forecast.io/forecast/' + apiInput.value + '/' + locationInput.value + '?units=si&extend=hourly&v=' + Math.random()));
 	req.send();
 	req.addEventListener('load', function() {
+		try {
+			var data = JSON.parse(localStorage.lastData = JSON.parse(this.responseText).contents);
+		} catch(e) {
+			return console.log(e);
+		}
 		var e = document.getElementsByTagName('section')[0];
 		if (e) e.parentNode.removeChild(e);
-		try {
-			drawData(JSON.parse(localStorage.lastData = this.responseText));
-		} catch(e) {
-			console.log(e);
-		}
+		drawData(data);
 	});
 }
 if (!locationInput.value) refreshLocation();
