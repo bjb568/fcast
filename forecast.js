@@ -644,7 +644,7 @@ function refreshLocation() {
 }
 function refresh() {
 	var req = new XMLHttpRequest();
-	req.open('GET', 'https://jsonp.afeld.me/?url=' + encodeURIComponent('https://api.darksky.net/forecast/' + apiInput.value + '/' + locationInput.value + '?units=si&extend=hourly&v=' + Math.random()));
+	req.open('GET', 'https://devdoodle.net:2244/?url=' + encodeURIComponent(apiInput.value + '/' + locationInput.value + '?units=si&extend=hourly&v=' + Math.random()));
 	req.send();
 	req.addEventListener('load', function() {
 		var e = document.getElementsByTagName('section')[0];
