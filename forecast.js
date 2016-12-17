@@ -47,7 +47,15 @@ function createLine(x1, y1, x2, y2, color) {
 }
 
 function fixSummary(text) {
-	return text.replace(/(-?\d+)°C/g, function(t, d) {return parseInt(d) + 273 + '\u2006K';}).replaceAll(' cm.', '\u2006cm').replaceAll('under ', '<').replaceAll('through', 'thru');
+	return text
+		.replace(/(-?\d+)°C/g, function(t, d) {return parseInt(d) + 273 + '\u2006K';})
+		.replaceAll(' cm.', '\u2006cm')
+		.replaceAll('under ', '<')
+		.replaceAll('through', 'thru')
+		.replaceAll('precipitation', 'pcpn')
+		.replaceAll('temperature', 'temp')
+		.replace(/ min.$/, 'm.')
+		.replace(/ min./g, 'm');
 }
 
 function drawData(data) {
@@ -94,7 +102,7 @@ function drawData(data) {
 		var incr = 216 / max;
 		for (var ly = 216; ly > 8; ly -= incr) {
 			if (p % (max < 2000 ? 200 : max < 5000 ? 500 : max < 10000 ? 1000 : 2000) == 0) {
-				minutelySVG.appendChild(createLine(24, ly, 753, ly, '#333'));
+				minutelySVG.appendChild(createLine(24, ly, 754, ly, '#323'));
 				minutelySVG.appendChild(createText(20, ly + 4, 11, 'end', (p / 1000).toFixed(1)));
 			}
 			p++;
@@ -102,8 +110,8 @@ function drawData(data) {
 		minutelySVG.appendChild(createText(4, 236, 14, false, 'mm/hr'));
 		for (var i = 0; i <= 60; i++) {
 			if (i % 10 == 0) {
-				var x = i / 60 * 720 + 33;
-				minutelySVG.appendChild(createLine(x, 0, x, 220, '#333'));
+				var x = i / 60 * 720 + 32;
+				minutelySVG.appendChild(createLine(x, 0, x, 220, '#323'));
 				if (i) minutelySVG.appendChild(createText(x, 232, 11, 'middle', '+' + i + 'm'));
 			}
 		}
@@ -141,8 +149,8 @@ function drawData(data) {
 						y: (lastlastY ? lastY - m * (lastlastY - lastY) : lastY).bound(false, 216)
 					};
 				}
-				if (i == data.minutely.data.length - 1) d += nextControl.x + ',' + nextControl.y + ' ' + (i * 12 + 33) + ',' + y + ' ' + (i * 12 + 33) + ',' + y;
-			} else d += (i * 12 + 33) + ',' + y + ' C';
+				if (i == data.minutely.data.length - 1) d += nextControl.x + ',' + nextControl.y + ' ' + (i * 12 + 32) + ',' + y + ' ' + (i * 12 + 32) + ',' + y;
+			} else d += (i * 12 + 32) + ',' + y + ' C';
 			lastlastY = lastY;
 			lastY = y;
 			var rect = document.createElementNS(svgns, 'rect');
@@ -165,7 +173,7 @@ function drawData(data) {
 		circle.setAttribute('ry', 4);
 		minutelySVG.appendChild(circle);
 		var path = document.createElementNS(svgns, 'path');
-		path.setAttribute('d', d + 'L753,216 L33,216 Z');
+		path.setAttribute('d', d + 'L754,216 L32,216 Z');
 		minutelySVG.insertBefore(path, minutelySVG.getElementsByTagName('rect')[0]);
 		minutelySVG.appendChild(rainGradient);
 		minutelySVG.appendChild(createText(rainCollapse ? -232 : -141, -8, 20, false, 'Pcpn.'));
@@ -184,7 +192,10 @@ function drawData(data) {
 	block2.appendChild(hourlyTitle);
 	var hourlySVG = document.createElementNS(svgns, 'svg');
 	hourlySVG.id = 'hourly';
-	hourlySVG.setAttribute('viewBox', '-24 -12 776 676');
+	hourlySVG.setAttribute('viewBox', '28 -12 2708 676');
+	var hourlySideSVG = document.createElementNS(svgns, 'svg');
+	hourlySideSVG.id = 'hourly-side';
+	hourlySideSVG.setAttribute('viewBox', '-24 -12 96 676');
 	var min = Infinity,
 		max = -Infinity;
 	for (var i = 0; i < data.hourly.data.length; i++) {
@@ -200,12 +211,12 @@ function drawData(data) {
 	var incr = 212 / (max - min);
 	for (var ly = 216; ly >= 4; ly -= incr) {
 		if (p % 2 == 0 || range < 12) {
-			hourlySVG.appendChild(createLine(33, ly, 754, ly, '#333'));
-			hourlySVG.appendChild(createText(20, ly + 4, 11, 'end', p.toString()));
+			hourlySVG.appendChild(createLine(32, ly, 2554, ly, '#323'));
+			hourlySideSVG.appendChild(createText(20, ly + 4, 11, 'end', p.toString()));
 		}
 		p++;
 	}
-	hourlySVG.appendChild(createText(4, 236, 14, false, 'K'));
+	hourlySideSVG.appendChild(createText(4, 236, 14, false, 'K'));
 	var max = 0;
 	for (var i = 0; i < data.hourly.data.length; i++) max = Math.max(max, data.hourly.data[i].precipIntensity * 1000);
 	var rainCollapse = max < 50;
@@ -216,12 +227,12 @@ function drawData(data) {
 	var incr2 = 144 / max;
 	for (var ly = rainCollapse ? 272 : 384; ly > 248; ly -= incr2) {
 		if (p % (max < 1500 ? 200 : max < 3000 ? 500 : max < 7000 ? 1000 : 2000) == 0) {
-			hourlySVG.appendChild(createLine(33, ly, 753, ly, '#333'));
-			hourlySVG.appendChild(createText(20, ly + 4, 11, 'end', (p / 1000).toFixed(1)));
+			hourlySVG.appendChild(createLine(32, ly, 2554, ly, '#323'));
+			hourlySideSVG.appendChild(createText(20, ly + 4, 11, 'end', (p / 1000).toFixed(1)));
 		}
 		p++;
 	}
-	hourlySVG.appendChild(createText(4, rainCollapse ? 292 : 404, 14, false, 'mm/hr'));
+	hourlySideSVG.appendChild(createText(4, rainCollapse ? 292 : 404, 14, false, 'mm/hr'));
 	var max = 0;
 	for (var i = 0; i < data.hourly.data.length; i++) max = Math.max(max, data.hourly.data[i].windSpeed);
 	max *= 1.3;
@@ -229,20 +240,20 @@ function drawData(data) {
 	var incr5 = 100 / max;
 	for (var ly = rainCollapse ? 520 : 632; ly > (rainCollapse ? 420 : 532); ly -= incr5) {
 		if (p % (max < 6 ? 1 : max < 12 ? 2 : max < 24 ? 4 : 8) == 0) {
-			hourlySVG.appendChild(createLine(33, ly, 753, ly, '#333'));
-			hourlySVG.appendChild(createText(20, ly + 4, 11, 'end', p.toString()));
+			hourlySVG.appendChild(createLine(32, ly, 2554, ly, '#323'));
+			hourlySideSVG.appendChild(createText(20, ly + 4, 11, 'end', p.toString()));
 		}
 		p++;
 	}
-	hourlySVG.appendChild(createText(4, rainCollapse ? 540 : 662, 14, false, 'm/s'));
+	hourlySideSVG.appendChild(createText(4, rainCollapse ? 540 : 662, 14, false, 'm/s'));
 	for (var t = data.hourly.data[0].time; t <= data.hourly.data[data.hourly.data.length - 1].time; t += 3600) {
 		var d = new Date(t * 1000),
-			x = (t - data.hourly.data[0].time) / 3600 / 48 * 720 + 33;
-		if (d.getHours() % 12 == 0) hourlySVG.appendChild(createLine(x, 4, x, 716, '#333'));
+			x = (t - data.hourly.data[0].time) / 3600 / 48 * 720 + 32;
+		if (d.getHours() % 12 == 0) hourlySVG.appendChild(createLine(x, 4, x, 716, '#323'));
 		else if (d.getHours() % 12 == 6 && x > 75) {
 			var text = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d.getDay()] + (d.getHours() == 18 ? ' afternoon' : ' morning');
 			hourlySVG.appendChild(createText(x, 0, 11, 'middle', text));
-			hourlySVG.appendChild(createText(x, rainCollapse ? 550 : 662, 11, 'middle', text));
+			hourlySideSVG.appendChild(createText(x, rainCollapse ? 550 : 662, 11, 'middle', text));
 		}
 	}
 	var lastlastY = undefined,
@@ -253,7 +264,7 @@ function drawData(data) {
 	var lastlastYa = undefined,
 		lastYa = undefined,
 		nextControla = undefined,
-		da = 'M33,-100 L' + (data.hourly.data.length * 15 + 18) + ',-100',
+		da = 'M32,-100 L' + (data.hourly.data.length * 15 + 18) + ',-100',
 		ma = 0.5;
 	var lastlastY2 = undefined,
 		lastY2 = undefined,
@@ -311,8 +322,8 @@ function drawData(data) {
 					y: lastlastY ? lastY - m * (lastlastY - lastY) : lastY
 				};
 			}
-			if (i == data.hourly.data.length - 1) d += nextControl.x + ',' + nextControl.y + ' ' + (i * 15 + 33) + ',' + y + ' ' + (i * 15 + 33) + ',' + y;
-		} else d += (i * 15 + 33) + ',' + y + ' C';
+			if (i == data.hourly.data.length - 1) d += nextControl.x + ',' + nextControl.y + ' ' + (i * 15 + 32) + ',' + y + ' ' + (i * 15 + 32) + ',' + y;
+		} else d += (i * 15 + 32) + ',' + y + ' C';
 		lastlastY = lastY;
 		lastY = y;
 		var ya = data.hourly.data[i].temperature == data.hourly.data[i].apparentTemperature ? undefined : 216 - (data.hourly.data[i].apparentTemperature + 273.15 - min) * incr;
@@ -337,9 +348,9 @@ function drawData(data) {
 				};
 			} else nextControla = undefined;
 			if (i == data.hourly.data.length - 1 || (nextControla && data.hourly.data[i + 1].temperature == data.hourly.data[i + 1].apparentTemperature)) {
-				da += nextControla.x + ',' + nextControla.y + ' ' + (i * 15 + 33) + ',' + ya + ' ' + (i * 15 + 33) + ',' + ya;
+				da += nextControla.x + ',' + nextControla.y + ' ' + (i * 15 + 32) + ',' + ya + ' ' + (i * 15 + 32) + ',' + ya;
 			}
-		} else if (ya) da += ' M' + (i * 15 + 33) + ',' + ya + ' C';
+		} else if (ya) da += ' M' + (i * 15 + 32) + ',' + ya + ' C';
 		if (ya) {
 			lastlastYa = lastYa;
 			lastYa = ya;
@@ -370,8 +381,8 @@ function drawData(data) {
 					y: (lastlastY2 ? lastY2 - m2 * (lastlastY2 - lastY2) : lastY2).bound(false, rainCollapse ? 272 : 384)
 				};
 			}
-			if (i == data.hourly.data.length - 1) d2 += nextControl2.x + ',' + nextControl2.y + ' ' + (i * 15 + 33) + ',' + y2 + ' ' + (i * 15 + 33) + ',' + y2;
-		} else d2 += (i * 15 + 33) + ',' + y2 + ' C';
+			if (i == data.hourly.data.length - 1) d2 += nextControl2.x + ',' + nextControl2.y + ' ' + (i * 15 + 32) + ',' + y2 + ' ' + (i * 15 + 32) + ',' + y2;
+		} else d2 += (i * 15 + 32) + ',' + y2 + ' C';
 		lastlastY2 = lastY2;
 		lastY2 = y2;
 		var y5 = (rainCollapse ? 520 : 632) - data.hourly.data[i].windSpeed * incr5;
@@ -395,8 +406,8 @@ function drawData(data) {
 					y: (lastlastY5 ? lastY5 - m5 * (lastlastY5 - lastY5) : lastY5).bound(false, rainCollapse ? 520 : 632)
 				};
 			}
-			if (i == data.hourly.data.length - 1) d5 += nextControl5.x + ',' + nextControl5.y + ' ' + (i * 15 + 33) + ',' + y5 + ' ' + (i * 15 + 33) + ',' + y5;
-		} else d5 += (i * 15 + 33) + ',' + y5 + ' C';
+			if (i == data.hourly.data.length - 1) d5 += nextControl5.x + ',' + nextControl5.y + ' ' + (i * 15 + 32) + ',' + y5 + ' ' + (i * 15 + 32) + ',' + y5;
+		} else d5 += (i * 15 + 32) + ',' + y5 + ' C';
 		lastlastY5 = lastY5;
 		lastY5 = y5;
 		var rect = document.createElementNS(svgns, 'rect');
@@ -406,19 +417,19 @@ function drawData(data) {
 		rect.setAttribute('height', 700);
 		rect.style.opacity = 0;
 		hourlySVG.appendChild(rect);
-		hourlySVG.appendChild(createText(i < 30 ? i * 15 + 42 : i * 15 + 24, y, 14, i < 30 ? false : 'end', '{' + (data.hourly.data[i].temperature + 273.15).toFixed(2) + '}\u2006K, {' + (data.hourly.data[i].humidity).toFixed(2) + '} humidity'));
-		hourlySVG.appendChild(createText(i < 30 ? i * 15 + 42 : i * 15 + 24, y + 16, 14, i < 30 ? false : 'end', 'at {' + new Date(data.hourly.data[i].time * 1000).getHours() + ':00}'));
-		hourlySVG.appendChild(createText(i < 30 ? i * 15 + 42 : i * 15 + 24, y2 - 36, 14, i < 30 ? false : 'end', '{' + (data.hourly.data[i].precipProbability).toFixed(2) + '} chance of ' + (data.hourly.data[i].precipType || 'pcpn')));
+		hourlySVG.appendChild(createText(i * 15 + 42, y, 14, false, '{' + (data.hourly.data[i].temperature + 273.15).toFixed(2) + '}\u2006K, {' + (data.hourly.data[i].humidity).toFixed(2) + '} humidity'));
+		hourlySVG.appendChild(createText(i * 15 + 42, y + 16, 14, false, 'at {' + new Date(data.hourly.data[i].time * 1000).getHours() + ':00}'));
+		hourlySVG.appendChild(createText(i * 15 + 42, y2 - 36, 14, false, '{' + (data.hourly.data[i].precipProbability).toFixed(2) + '} chance of ' + (data.hourly.data[i].precipType || 'pcpn')));
 		if (rainCollapse) hourlySVG.lastChild.style.opacity = 0;
-		hourlySVG.appendChild(createText(i < 30 ? i * 15 + 42 : i * 15 + 24, y2 - 20, 14, i < 30 ? false : 'end', '{' + (data.hourly.data[i].precipIntensity * 1000).toFixed(0) + '}\u2006µm/hr'));
-		hourlySVG.appendChild(createText(i < 30 ? i * 15 + 42 : i * 15 + 24, y2 - 4, 14, i < 30 ? false : 'end', 'at {' + new Date(data.hourly.data[i].time * 1000).getHours() + ':00}'));
+		hourlySVG.appendChild(createText(i * 15 + 42, y2 - 20, 14, false, '{' + (data.hourly.data[i].precipIntensity * 1000).toFixed(0) + '}\u2006µm/hr'));
+		hourlySVG.appendChild(createText(i * 15 + 42, y2 - 4, 14, false, 'at {' + new Date(data.hourly.data[i].time * 1000).getHours() + ':00}'));
 		var y3 = (rainCollapse ? 366 : 478);
-		hourlySVG.appendChild(createText(i < 30 ? i * 15 + 42 : i * 15 + 24, y3 - 28, 14, i < 30 ? false : 'end', '{' + data.hourly.data[i].cloudCover.toFixed(2) + '} cloud cover'));
-		hourlySVG.appendChild(createText(i < 30 ? i * 15 + 42 : i * 15 + 24, y3 + 4, 14, i < 30 ? false : 'end', (data.hourly.data[i].visibility > 16.08 ? '{Max}' : '{' + (data.hourly.data[i].visibility || 0).toFixed(2) + '}\u2006km') + ' visibility'));
+		hourlySVG.appendChild(createText(i * 15 + 42, y3 - 28, 14, false, '{' + data.hourly.data[i].cloudCover.toFixed(2) + '} cloud cover'));
+		hourlySVG.appendChild(createText(i * 15 + 42, y3 + 4, 14, false, (data.hourly.data[i].visibility > 16.08 ? '{Max}' : '{' + (data.hourly.data[i].visibility || 0).toFixed(2) + '}\u2006km') + ' visibility'));
 		if (isNaN(data.hourly.data[i].visibility)) hourlySVG.lastChild.style.display = 'none';
-		hourlySVG.appendChild(createText(i < 30 ? i * 15 + 42 : i * 15 + 24, y3 + 20, 14, i < 30 ? false : 'end', 'at {' + new Date(data.hourly.data[i].time * 1000).getHours() + ':00}'));
-		hourlySVG.appendChild(createText(i < 30 ? i * 15 + 42 : i * 15 + 24, y5 - 20, 14, i < 30 ? false : 'end', '{' + (data.hourly.data[i].windSpeed).toFixed(2) + '}\u2006m/s'));
-		hourlySVG.appendChild(createText(i < 30 ? i * 15 + 42 : i * 15 + 24, y5 - 4, 14, i < 30 ? false : 'end', 'at {' + new Date(data.hourly.data[i].time * 1000).getHours() + ':00}'));
+		hourlySVG.appendChild(createText(i * 15 + 42, y3 + 20, 14, false, 'at {' + new Date(data.hourly.data[i].time * 1000).getHours() + ':00}'));
+		hourlySVG.appendChild(createText(i * 15 + 42, y5 - 20, 14, false, '{' + (data.hourly.data[i].windSpeed).toFixed(2) + '}\u2006m/s'));
+		hourlySVG.appendChild(createText(i * 15 + 42, y5 - 4, 14, false, 'at {' + new Date(data.hourly.data[i].time * 1000).getHours() + ':00}'));
 	}
 	var circle = document.createElementNS(svgns, 'ellipse');
 	circle.setAttribute('cx', i * 15 + 18);
@@ -454,7 +465,7 @@ function drawData(data) {
 	path.style.opacity = 0.6;
 	hourlySVG.insertBefore(path, hourlySVG.getElementsByTagName('rect')[0]);
 	var path = document.createElementNS(svgns, 'path');
-	path.setAttribute('d', d2 + (rainCollapse ? 'L753,272 L33,272 Z' : 'L753,384 L33,384 Z'));
+	path.setAttribute('d', d2 + (rainCollapse ? 'L754,272 L32,272 Z' : 'L754,384 L32,384 Z'));
 	path.style.fill = 'url(#rain-gradient2)';
 	hourlySVG.insertBefore(path, hourlySVG.getElementsByTagName('rect')[0]);
 	var path = document.createElementNS(svgns, 'path');
@@ -466,44 +477,51 @@ function drawData(data) {
 	hourlySVG.appendChild(hcGradient);
 	hourlySVG.appendChild(hvGradient);
 	var rect = document.createElementNS(svgns, 'rect');
-	rect.setAttribute('x', 33);
+	rect.setAttribute('x', 32);
 	rect.setAttribute('y', (rainCollapse ? 366 : 478) - 54);
-	rect.setAttribute('width', 720);
+	rect.setAttribute('width', 2520);
 	rect.setAttribute('height', 12);
 	rect.style.fill = 'url(#hc-gradient)';
 	hourlySVG.insertBefore(rect, hourlySVG.getElementsByTagName('rect')[0]);
 	var rect = document.createElementNS(svgns, 'rect');
-	rect.setAttribute('x', 33);
+	rect.setAttribute('x', 32);
 	rect.setAttribute('y', (rainCollapse ? 366 : 478) - 22);
-	rect.setAttribute('width', 720);
+	rect.setAttribute('width', 2520);
 	rect.setAttribute('height', 12);
 	rect.style.fill = 'url(#hv-gradient)';
 	hourlySVG.insertBefore(rect, hourlySVG.getElementsByTagName('rect')[0]);
-	hourlySVG.appendChild(createText(-136, -8, 20, false, 'Temp'));
-	hourlySVG.lastChild.style.fill = '#ff0';
-	hourlySVG.lastChild.setAttribute('transform', 'rotate(-90)');
-	hourlySVG.appendChild(createText(rainCollapse ? -288 : -340, -8, 20, false, 'Pcpn.'));
-	hourlySVG.lastChild.style.fill = '#0af';
-	hourlySVG.lastChild.setAttribute('transform', 'rotate(-90)');
-	hourlySVG.appendChild(createText(rainCollapse ? -368 : -472, -8, 20, false, 'Cloud'));
-	hourlySVG.lastChild.style.fill = '#eee';
-	hourlySVG.lastChild.setAttribute('transform', 'rotate(-90)');
+	hourlySideSVG.appendChild(createText(-136, -8, 20, false, 'Temp'));
+	hourlySideSVG.lastChild.style.fill = '#ff0';
+	hourlySideSVG.lastChild.setAttribute('transform', 'rotate(-90)');
+	hourlySideSVG.appendChild(createText(rainCollapse ? -288 : -340, -8, 20, false, 'Pcpn.'));
+	hourlySideSVG.lastChild.style.fill = '#0af';
+	hourlySideSVG.lastChild.setAttribute('transform', 'rotate(-90)');
+	hourlySideSVG.appendChild(createText(rainCollapse ? -368 : -472, -8, 20, false, 'Cloud'));
+	hourlySideSVG.lastChild.style.fill = '#eee';
+	hourlySideSVG.lastChild.setAttribute('transform', 'rotate(-90)');
 	if (!isNaN(data.hourly.data[0].visibility)) {
-		hourlySVG.appendChild(createText(rainCollapse ? -396 : -500, 18, 20, false, 'Visibility'));
-		hourlySVG.lastChild.style.fill = '#f96';
-		hourlySVG.lastChild.setAttribute('transform', 'rotate(-90)');
+		hourlySideSVG.appendChild(createText(rainCollapse ? -396 : -500, 18, 20, false, 'Visibility'));
+		hourlySideSVG.lastChild.style.fill = '#f96';
+		hourlySideSVG.lastChild.setAttribute('transform', 'rotate(-90)');
 	}
-	hourlySVG.appendChild(createText(rainCollapse ? -500 : -604, -8, 20, false, 'Wind'));
-	hourlySVG.lastChild.style.fill = '#8f8';
-	hourlySVG.lastChild.setAttribute('transform', 'rotate(-90)');
-	hourlySVG.appendChild(createLine(-14, 12, -14, 74, '#ff0'));
-	hourlySVG.appendChild(createLine(-14, 144, -14, 236, '#ff0'));
+	hourlySideSVG.appendChild(createText(rainCollapse ? -500 : -604, -8, 20, false, 'Wind'));
+	hourlySideSVG.lastChild.style.fill = '#8f8';
+	hourlySideSVG.lastChild.setAttribute('transform', 'rotate(-90)');
+	hourlySideSVG.appendChild(createLine(-14, 12, -14, 74, '#ff0'));
+	hourlySideSVG.appendChild(createLine(-14, 144, -14, 236, '#ff0'));
 	var a = rainCollapse ? 0 : 104;
-	hourlySVG.appendChild(createLine(-14, 236 , -14, 234 + a/2, '#0af'));
-	hourlySVG.appendChild(createLine(-14, 292 + a/2, -14, 304 + a, '#0af'));
-	hourlySVG.appendChild(createLine(-14, 408 + a, -14, 448 + a, '#8f8'));
-	hourlySVG.appendChild(createLine(-14, 504 + a, -14, 552 + a, '#8f8'));
-	block2.appendChild(hourlySVG);
+	hourlySideSVG.appendChild(createLine(-14, 236 , -14, 234 + a/2, '#0af'));
+	hourlySideSVG.appendChild(createLine(-14, 292 + a/2, -14, 304 + a, '#0af'));
+	hourlySideSVG.appendChild(createLine(-14, 408 + a, -14, 448 + a, '#8f8'));
+	hourlySideSVG.appendChild(createLine(-14, 504 + a, -14, 552 + a, '#8f8'));
+	var hourlySVGCont2 = document.createElement('div');
+	hourlySVGCont2.id = 'hourly-cont2';
+	hourlySVGCont2.appendChild(hourlySVG);
+	var hourlySVGCont = document.createElement('div');
+	hourlySVGCont.id = 'hourly-cont';
+	hourlySVGCont.appendChild(hourlySideSVG);
+	hourlySVGCont.appendChild(hourlySVGCont2);
+	block2.appendChild(hourlySVGCont);
 	var dailyTitle = document.createElement('h2');
 	dailyTitle.appendChild(document.createTextNode(fixSummary(data.daily.summary)));
 	cont.appendChild(block2);
@@ -529,7 +547,7 @@ function drawData(data) {
 	var incr = 252 / range;
 	for (var lx = 104; lx <= 368; lx += incr) {
 		if (p % s == 0) {
-			dailySVG.appendChild(createLine(lx, 16, lx, 790, '#333'));
+			dailySVG.appendChild(createLine(lx, 16, lx, 790, '#323'));
 			dailySVG.appendChild(createText(lx, 14, 12, 'middle', p.toString()));
 		}
 		p++;
@@ -570,7 +588,7 @@ function drawData(data) {
 			calcx(k.apparentTemperatureMin + 273.15) + ',' + calcy(k.apparentTemperatureMinTime) + 'L' + calcx(k.apparentTemperatureMax + 273.15) + ',' + calcy(k.apparentTemperatureMaxTime) + 'L' :
 			calcx(k.apparentTemperatureMax + 273.15) + ',' + calcy(k.apparentTemperatureMaxTime) + 'L' + calcx(k.apparentTemperatureMin + 273.15) + ',' + calcy(k.apparentTemperatureMinTime) + 'L';
 		dailySVG.appendChild(createText(4, calcy(k.time + 43200) + 4, 16, false, ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][(new Date(k.time * 1000)).getDay()]));
-		if (i) dailySVG.insertBefore(createLine(0, calcy(k.time), 960, calcy(k.time), '#333'), dailySVG.firstChild);
+		if (i) dailySVG.insertBefore(createLine(0, calcy(k.time), 960, calcy(k.time), '#323'), dailySVG.firstChild);
 		dailySVG.appendChild(createText(400, calcy(k.time + 43200) - 6, 16, false, '{' + fixSummary(k.summary) + '}'));
 		var rect = document.createElementNS(svgns, 'rect');
 		rect.setAttribute('x', 400);
@@ -644,7 +662,7 @@ function refreshLocation() {
 }
 function refresh() {
 	var req = new XMLHttpRequest();
-	req.open('GET', 'https://devdoodle.net:2244/?url=' + encodeURIComponent(apiInput.value + '/' + locationInput.value + '?units=si&extend=hourly&v=' + Math.random()));
+	req.open('GET', 'https://devdoodle.net:2244/?url=' + encodeURIComponent(apiInput.value + '/' + locationInput.value + '?units=si&extend=hourly&v=' + Math.random())); // TODO: display full week of hourly data
 	req.send();
 	req.addEventListener('load', function() {
 		var e = document.getElementsByTagName('section')[0];
@@ -659,14 +677,14 @@ function refresh() {
 if (!locationInput.value) refreshLocation();
 else {
 	refresh();
-	var interval = setInterval(refresh, 300000);
-	document.addEventListener('visibilitychange', function() {
-		if (document.hidden) clearInterval(interval);
-		else {
-			refresh();
-			interval = setInterval(refresh, 300000);
-		}
-	});
+	// var interval = setInterval(refresh, 300000);
+	// document.addEventListener('visibilitychange', function() {
+	// 	if (document.hidden) clearInterval(interval);
+	// 	else {
+	// 		refresh();
+	// 		interval = setInterval(refresh, 300000);
+	// 	}
+	// });
 }
 document.getElementById('refresh-location').addEventListener('click', refreshLocation);
 var lastInnerWidth = innerWidth;

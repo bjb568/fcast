@@ -37,10 +37,10 @@ h1, h2 {
 	font-weight: normal;
 }
 @media (min-width: 1432px) and (max-width: 2399px) {
-	div { width: calc(50% - 16px) }
-	div:nth-child(2) { float: left }
-	div:nth-child(3) { float: right }
-	div:nth-child(4) {
+	section > div { width: calc(50% - 16px) }
+	section > div:nth-child(2) { float: left }
+	section > div:nth-child(3) { float: right }
+	section > div:nth-child(4) {
 		clear: left;
 		padding-top: 48px;
 	}
@@ -51,11 +51,31 @@ h1, h2 {
 		flex-wrap: wrap;
 	}
 	h1 { width: 100% }
-	div {
+	section > div {
 		flex-grow: 1;
 		flex-basis: 770px;
 	}
-	div:not(:last-child) { margin-right: 32px }
+	section > div:not(:last-child) { margin-right: 32px }
+}
+#hourly-cont {
+	display: flex;
+	max-width: 872px;
+}
+#hourly-side {
+	width: 12.4%;
+	margin-top: 0;
+	z-index: 1;
+	pointer-events: none;
+}
+#hourly-cont2 {
+	overflow-y: auto;
+	margin-left: -5.5%;
+	width: 100%;
+}
+#hourly {
+	width: 350%;
+	max-width: 2870px;
+	margin-top: 0;
 }
 #hourly rect:not(:hover) + text,
 #hourly rect:not(:hover) + text + text,
