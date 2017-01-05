@@ -290,15 +290,15 @@ function drawData(data) {
 	hvGradient.id = 'hv-gradient';
 	for (var i = 0; i < data.hourly.data.length; i++) {
 		var stop = document.createElementNS(svgns, 'stop');
-		stop.setAttribute('offset', i / 0.48 + '%');
+		stop.setAttribute('offset', i / data.hourly.data.length * 100 + '%');
 		stop.setAttribute('stop-color', 'hsl(' + Math.round(data.hourly.data[i].humidity * 140) + ', 100%, 50%)');
 		hourlyGradient.appendChild(stop);
 		var stop = document.createElementNS(svgns, 'stop');
-		stop.setAttribute('offset', i / 0.48 + '%');
+		stop.setAttribute('offset', i / data.hourly.data.length * 100 + '%');
 		stop.setAttribute('stop-color', 'hsl(0, 0%, ' + (100 - data.hourly.data[i].cloudCover * 95) + '%)');
 		hcGradient.appendChild(stop);
 		var stop = document.createElementNS(svgns, 'stop');
-		stop.setAttribute('offset', i / 0.48 + '%');
+		stop.setAttribute('offset', i / data.hourly.data.length * 100 + '%');
 		stop.setAttribute('stop-color', 'rgb(' + Math.round(data.hourly.data[i].visibility / 16.09 * 255) + ', ' + Math.round(data.hourly.data[i].visibility / 16.09 * 144) + ', 0)');
 		hvGradient.appendChild(stop);
 		var y = 216 - (data.hourly.data[i].temperature + 273.15 - min) * incr;
@@ -356,7 +356,7 @@ function drawData(data) {
 			lastYa = ya;
 		} else lastlastYa = lastYa = undefined;
 		var stop = document.createElementNS(svgns, 'stop');
-		stop.setAttribute('offset', i / 0.48 + '%');
+		stop.setAttribute('offset', i / data.hourly.data.length * 100 + '%');
 		var scolor = data.hourly.data[i].precipProbability * 223;
 		stop.setAttribute('stop-color', 'rgb(32, ' + Math.round(32 + scolor / 2) + ', ' + Math.round(32 + scolor) + ')');
 		rainGradient2.appendChild(stop);
@@ -465,7 +465,7 @@ function drawData(data) {
 	path.style.opacity = 0.6;
 	hourlySVG.insertBefore(path, hourlySVG.getElementsByTagName('rect')[0]);
 	var path = document.createElementNS(svgns, 'path');
-	path.setAttribute('d', d2 + (rainCollapse ? 'L754,272 L32,272 Z' : 'L754,384 L32,384 Z'));
+	path.setAttribute('d', d2 + (rainCollapse ? 'L2554,272 L32,272 Z' : 'L2554,384 L32,384 Z'));
 	path.style.fill = 'url(#rain-gradient2)';
 	hourlySVG.insertBefore(path, hourlySVG.getElementsByTagName('rect')[0]);
 	var path = document.createElementNS(svgns, 'path');
