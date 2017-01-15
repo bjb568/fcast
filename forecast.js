@@ -253,7 +253,7 @@ function drawData(data) {
 		else if (d.getHours() % 12 == 6 && x > 75) {
 			var text = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d.getDay()] + (d.getHours() == 18 ? ' afternoon' : ' morning');
 			hourlySVG.appendChild(createText(x, 0, 11, 'middle', text));
-			hourlySideSVG.appendChild(createText(x, rainCollapse ? 550 : 662, 11, 'middle', text));
+			hourlySVG.appendChild(createText(x, rainCollapse ? 550 : 662, 11, 'middle', text));
 		}
 	}
 	var lastlastY = undefined,
@@ -428,7 +428,7 @@ function drawData(data) {
 		hourlySVG.appendChild(createText(i * 15 + 42, y3 + 4, 14, false, (data.hourly.data[i].visibility > 16.08 ? '{Max}' : '{' + (data.hourly.data[i].visibility || 0).toFixed(2) + '}\u2006km') + ' visibility'));
 		if (isNaN(data.hourly.data[i].visibility)) hourlySVG.lastChild.style.display = 'none';
 		hourlySVG.appendChild(createText(i * 15 + 42, y3 + 20, 14, false, 'at {' + new Date(data.hourly.data[i].time * 1000).getHours() + ':00}'));
-		hourlySVG.appendChild(createText(i * 15 + 42, y5 - 20, 14, false, '{' + (data.hourly.data[i].windSpeed).toFixed(2) + '}\u2006m/s'));
+		if (data.hourly.data[i].windSpeed) hourlySVG.appendChild(createText(i * 15 + 42, y5 - 20, 14, false, '{' + (data.hourly.data[i].windSpeed).toFixed(2) + '}\u2006m/s'));
 		hourlySVG.appendChild(createText(i * 15 + 42, y5 - 4, 14, false, 'at {' + new Date(data.hourly.data[i].time * 1000).getHours() + ':00}'));
 	}
 	var circle = document.createElementNS(svgns, 'ellipse');
