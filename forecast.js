@@ -212,7 +212,7 @@ function drawData(data) {
 	for (var ly = 216; ly >= 4; ly -= incr) {
 		if (p % 2 == 0 || range < 12) {
 			hourlySVG.appendChild(createLine(32, ly, 2554, ly, '#323'));
-			hourlySideSVG.appendChild(createText(20, ly + 4, 11, 'end', p.toString()));
+			if (p % 4 == 0 || (p % 2 == 0 && range < 12)) hourlySideSVG.appendChild(createText(20, ly + 4, 11, 'end', p.toString()));
 		}
 		p++;
 	}
