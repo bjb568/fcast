@@ -3,9 +3,17 @@ body {
 	font: 100% "Lucida Grande", sans-serif;
 	color: #fff;
 }
+label {
+	display: flex;
+	align-items: center;
+}
 input {
-	width: 32em; max-width: calc(100% - 7em);
+	flex-grow: 1;
 	font-size: 1em;
+	background: #444;
+	color: #fff;
+	padding: 0.1em;
+	border: 1px solid #666;
 }
 svg {
 	width: 100%;
