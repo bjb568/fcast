@@ -1,4 +1,4 @@
-# fcast
+# fCast
 Simple forecast.io graphs
 
 ## Running:
